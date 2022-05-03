@@ -1,5 +1,12 @@
+import HomeLayout from "../components/Layouts/HomeLayout";
+import Moods from "../components/Moods/Moods";
+import SendMood from "../components/SendMood/SendMood";
+
 export default function Home() {
   return (
-    <h1>سلام بر نکست جی اس</h1>
+    <HomeLayout>
+      <SendMood />
+      <Moods />
+    </HomeLayout>
   )
 }
