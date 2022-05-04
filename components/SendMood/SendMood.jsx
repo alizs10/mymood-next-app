@@ -1,8 +1,10 @@
 import { useState } from "react";
+import MoodEmojies from "./MoodEmojies";
 
 const SendMood = () => {
 
     const [mood, setMood] = useState("")
+    const [moodEmoji, setMoodEmoji] = useState(0)
     
     const moodLimit = 700;
     const [charLeft, setCharLeft] = useState(moodLimit)
@@ -33,34 +35,9 @@ const SendMood = () => {
         <section className="flex flex-col mx-2 pb-4">
 
             <span className="text-xs text-slate-700 mb-2">مودت چیه؟</span>
-            <div className="flex py-2 gap-x-4 overflow-x-scroll no-scrollbar text-3xl text-slate-700">
+            
+            <MoodEmojies moodEmoji={moodEmoji} setMoodEmoji={setMoodEmoji}/>
 
-                <span className="cursor-pointer">
-                    <i className="fa-light fa-face-meh"></i>
-                </span>
-                <span className="cursor-pointer">
-                    <i className="fa-light fa-face-angry"></i>
-                </span>
-                <span className="cursor-pointer">
-                    <i className="fa-light fa-face-anxious-sweat"></i>
-                </span>
-                <span className="cursor-pointer">
-                    <i className="fa-light fa-face-expressionless"></i>
-                </span>
-                <span className="cursor-pointer">
-                    <i className="fa-light fa-face-frown-slight"></i>
-                </span>
-                <span className="cursor-pointer mood-emoji-active">
-                    <i className="fa-light fa-face-sleeping"></i>
-                </span>
-                <span className="cursor-pointer">
-                    <i className="fa-light fa-face-laugh"></i>
-                </span>
-                <span className="cursor-pointer">
-                    <i className="fa-light fa-face-mask"></i>
-                </span>
-
-            </div>
             <textarea className="
               form-control
               block

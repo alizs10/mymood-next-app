@@ -13,7 +13,7 @@ const HomeLayout = ({ children }) => {
 
     return (
         <Fragment>
-            <Header toggleNav={toggleNav} />
+            <Header toggleNav={toggleNav} setNavbarVisibility={setNavbarVisibility} />
             <AnimatePresence>
                 {navbarVisibility && (<Nav />)}
             </AnimatePresence>

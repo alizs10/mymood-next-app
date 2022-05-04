@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import Dropdown from "./Dropdown";
 
-const Header = ({ toggleNav }) => {
+const Header = ({ toggleNav, setNavbarVisibility }) => {
 
     const [userDropdownVisibility, setUserDropdownVisibility] = useState(false)
     const [dropdownStatus, setDropdownStatus] = useState(false)
@@ -13,6 +13,7 @@ const Header = ({ toggleNav }) => {
         if (userDropdownVisibility !== dropdownStatus) return;
 
         setDropdownStatus(1)
+        setNavbarVisibility(false)
         setUserDropdownVisibility(true)
     }
 

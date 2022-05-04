@@ -1,4 +1,13 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
 const Mood = () => {
+
+    const [isLiked, setIsLiked] = useState(true)
+
+    const handleLikeBtn = () => {
+        setIsLiked(!isLiked)
+    }
+
     return (
         <div className="mood">
 
@@ -10,10 +19,25 @@ const Mood = () => {
 
                 <div className="flex gap-x-4 items-center">
                     <div className="flex gap-x-2 items-center text-slate-700">
-                        <span className="text-xxs text-red-500">12</span>
-                        <button className="text-sm flex-center text-red-500">
-                            <i className="fa-solid fa-heart"></i>
-                        </button>
+                        <span className={`text-xxs hover-transition ${isLiked && "text-red-500"}`}>12</span>
+                       
+                            {
+                                isLiked ? (
+                                    <motion.button animate={{ scale: [1, 1.2, 1] }} className="text-sm flex-center text-red-500" onClick={() => handleLikeBtn()}>
+                                        <span key={0}>
+                                            <i className="fa-solid fa-heart"></i>
+                                        </span>
+                                    </motion.button>
+                                ) : (
+                                    <motion.button animate={{ scale: [1, 0.8, 1] }} className="text-sm flex-center" onClick={() => handleLikeBtn()}>
+                                        <span key={1}>
+                                            <i className="fa-light fa-heart"></i>
+                                        </span>
+                                    </motion.button>
+                                )
+                            }
+
+                 
                         <button className="text-sm flex-center">
                             <i className="fa-light fa-brake-warning"></i>
                         </button>
