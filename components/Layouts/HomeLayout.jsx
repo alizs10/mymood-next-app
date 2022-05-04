@@ -1,12 +1,22 @@
-import { Fragment } from "react";
+import { AnimatePresence } from "framer-motion";
+import { Fragment, useState } from "react";
 import Header from "./Header";
 import Nav from "./Nav";
 
 const HomeLayout = ({ children }) => {
+
+    const [navbarVisibility, setNavbarVisibility] = useState(false)
+
+    const toggleNav = () => {
+        setNavbarVisibility(!navbarVisibility)
+    }
+
     return (
         <Fragment>
-            <Header />
-            
+            <Header toggleNav={toggleNav} />
+            <AnimatePresence>
+                {navbarVisibility && (<Nav />)}
+            </AnimatePresence>
 
             <main className="mt-16 lg:mx-56">
 

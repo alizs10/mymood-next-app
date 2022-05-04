@@ -1,4 +1,34 @@
+import { useState } from "react";
+
 const SendMood = () => {
+
+    const [mood, setMood] = useState("")
+    
+    const moodLimit = 700;
+    const [charLeft, setCharLeft] = useState(moodLimit)
+    const [charLeftStatus, setCharLeftStatus] = useState("")
+
+    const handleMoodChange = (mood) => {
+
+        let validMood = mood;
+        validMood = validMood.slice(0, moodLimit)
+
+        let moodLen = validMood.length;
+        let charLeft = moodLimit - moodLen;
+        if (charLeft < 30 && charLeft > 3) {
+            setCharLeftStatus("amber")
+        } else if (charLeft <= 3) {
+            setCharLeftStatus("red")
+        } else {
+            setCharLeftStatus("")
+        }
+
+        setCharLeft(charLeft)
+        setMood(validMood)
+        return
+
+    }
+
     return (
         <section className="flex flex-col mx-2 pb-4">
 
@@ -50,10 +80,10 @@ const SendMood = () => {
               placeholder:text-xxs
               lg:placeholder:text-xs
               focus:text-gray-700 focus:bg-white focus:border-amber-300 focus:outline-none
-            " id="mood" rows="3" placeholder="توی چند کلمه یا جمله بنویس الان چه حسی داری ..."></textarea>
+            " id="mood" rows="3" placeholder="توی چند کلمه یا جمله بنویس الان چه حسی داری ..." value={mood} onChange={event => handleMoodChange(event.target.value)} />
 
             <div className="flex justify-between mt-2 items-center">
-                <span className="text-slate-700 text-xxs">700</span>
+                <span className={`text-xxs ${charLeftStatus !== "" ? `text-${charLeftStatus}-400` : "text-slate-700"}`}>{charLeft}</span>
 
                 <button className="btn bg-amber-200 text-xs lg:text-base text-slate-700">
                     <i className="fa-light fa-paper-plane"></i>
