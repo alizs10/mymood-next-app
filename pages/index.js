@@ -1,37 +1,33 @@
+import { Router } from "next/router";
 import HomeLayout from "../components/Layouts/HomeLayout";
 import Moods from "../components/Moods/Moods";
-import SendMood from "../components/SendMood/SendMood";
+import { getMoods } from "../Services/app/moods/moodsServices";
+import { isLoggedIn } from "../Services/app/user/userService";
 
-export const getServerSideProps = async function () {
+const Home = ({ loggedUser, moods }) => {
 
-  // api
-
-  const user = {
-    name: "کاربر 15",
-    bio: "این جهنم، جای زندگی نیس"
-  }
-
-  if (!user) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    }
-  }
-
-  return {
-    props: { user },
-  }
-}
-
-export default function Home() {
+  setInterval(() => {
+    Router.replace(Router.asPath);
+  }, 60000)
 
   return (
-    <HomeLayout>
-      <SendMood />
-      <Moods />
+    <HomeLayout loggedUser={loggedUser}>
+
+      <Moods moods={moods} />
     </HomeLayout>
-  )
+  );
 }
 
+export async function getServerSideProps({ req }) {
+
+  const loggedUser = await isLoggedIn(req.headers.cookie)
+  const moods = await getMoods()
+
+  return {
+    props: {
+      loggedUser, moods
+    },
+  }
+}
+
+export default Home;

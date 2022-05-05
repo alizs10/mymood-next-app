@@ -1,6 +1,6 @@
 import Mood from "./Mood";
 
-const Moods = () => {
+const Moods = ({ moods }) => {
     return (
         <section className="flex flex-col gap-y-4 mx-2 pb-4">
 
@@ -41,9 +41,10 @@ const Moods = () => {
             </div>
             <div className="flex flex-col gap-y-3">
 
-                <Mood />
-                <Mood />
-                <Mood />
+
+                {moods.map(mood => (
+                    <Mood key={mood.id} mood={mood} />
+                ))}
 
             </div>
 

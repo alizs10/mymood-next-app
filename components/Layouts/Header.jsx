@@ -2,8 +2,9 @@ import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useEffect } from "react";
 import Dropdown from "./Dropdown";
+import Link from "next/dist/client/link";
 
-const Header = ({ toggleNav, setNavbarVisibility }) => {
+const Header = ({ toggleNav, setNavbarVisibility, user, handleLogout }) => {
 
     const [userDropdownVisibility, setUserDropdownVisibility] = useState(false)
     const [dropdownStatus, setDropdownStatus] = useState(false)
@@ -16,6 +17,7 @@ const Header = ({ toggleNav, setNavbarVisibility }) => {
         setNavbarVisibility(false)
         setUserDropdownVisibility(true)
     }
+
 
     useEffect(() => {
 
@@ -40,15 +42,33 @@ const Header = ({ toggleNav, setNavbarVisibility }) => {
             </div>
 
             <div className="flex gap-x-1 relative">
-                <button className="btn bg-blue-700 text-slate-100 hidden">
-                    <i className="fa-regular fa-arrow-right-to-bracket"></i>
-                </button>
-                <span className="flex-center gap-x-2 text-xs lg:text-base text-slate-700 cursor-pointer hover:text-black hover-transition" onClick={() => handleDropdownToggle()}>
-                    <span>سلام، کاربر 7</span>
-                    <i className="fa-light fa-angle-down"></i>
-                </span>
+
+                {
+                    !user ? (
+                        <Link href="/login">
+                            <button className="btn bg-blue-700 text-slate-100">
+                                <i className="fa-regular fa-arrow-right-to-bracket"></i>
+                            </button>
+                        </Link>
+                    ) : (
+                        <span className="flex-center gap-x-2 text-xs lg:text-base text-slate-700 cursor-pointer hover:text-black hover-transition" onClick={() => handleDropdownToggle()}>
+                            <span>{`سلام، ${user.name}`}</span>
+                            {
+                                userDropdownVisibility ? (
+                                    <span key={1}>
+                                        <i className="fa-light fa-angle-down"></i>
+                                    </span>
+                                ) : (
+                                    <span key={0}>
+                                        <i className="fa-light fa-angle-up"></i>
+                                    </span>
+                                )
+                            }
+                        </span>
+                    )
+                }
                 <AnimatePresence>
-                    {userDropdownVisibility && (<Dropdown setUserDropdownVisibility={setUserDropdownVisibility} />)}
+                    {userDropdownVisibility && (<Dropdown handleLogout={handleLogout} setUserDropdownVisibility={setUserDropdownVisibility} />)}
                 </AnimatePresence>
 
             </div>
@@ -59,3 +79,4 @@ const Header = ({ toggleNav, setNavbarVisibility }) => {
 }
 
 export default Header;
+

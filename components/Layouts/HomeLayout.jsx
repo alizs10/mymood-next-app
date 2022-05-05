@@ -1,25 +1,35 @@
 import { AnimatePresence } from "framer-motion";
 import { Fragment, useState } from "react";
+import { logoutUser } from "../../Services/app/user/userService";
+import SendMood from "../SendMood/SendMood";
 import Header from "./Header";
 import Nav from "./Nav";
 
-const HomeLayout = ({ children }) => {
+const HomeLayout = ({ children, loggedUser }) => {
 
+    const [user, setUser] = useState(loggedUser)
     const [navbarVisibility, setNavbarVisibility] = useState(false)
 
     const toggleNav = () => {
         setNavbarVisibility(!navbarVisibility)
     }
 
+    const handleLogout = async () => {
+        const loggedOut = await logoutUser()
+        if (loggedOut) {
+            setUser(false)
+        }
+    }
+
     return (
         <Fragment>
-            <Header toggleNav={toggleNav} setNavbarVisibility={setNavbarVisibility} />
+            <Header handleLogout={handleLogout} user={user} toggleNav={toggleNav} setNavbarVisibility={setNavbarVisibility} />
             <AnimatePresence>
-                {navbarVisibility && (<Nav />)}
+                {navbarVisibility && (<Nav user={user} />)}
             </AnimatePresence>
 
             <main className="mt-16 lg:mx-56">
-
+            {user && (<SendMood />)}
                 {children}
 
             </main>

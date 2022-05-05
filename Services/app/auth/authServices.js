@@ -22,3 +22,16 @@ export const login = async (form) => {
         return await http.post(`${config["base_url"]}/api/login`, form)
     });
 }
+
+export const getUser = async (token) => {
+    return await http.get(`${config['base_url']}/api/user`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+}
+
+
+export const logout = async () => {
+    return await http.get(`${config["base_url"]}/api/logout`)
+}

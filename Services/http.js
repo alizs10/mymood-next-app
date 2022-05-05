@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers["Content-Type"] = "application/json";
@@ -21,11 +22,10 @@ axios.defaults.headers["Accept"] = "application/json";
 //     return Promise.reject(error);
 // });
 
-// const token = localStorage.getItem('token');
-// if (token) {
-//     axios.defaults.headers['Authorization'] = `Bearer ${token}`;
-    
-// }
+const token = Cookies.get("_token")
+if (token) {
+    axios.defaults.headers['Authorization'] = `Bearer ${token}`;
+}
 
 
 export default {
