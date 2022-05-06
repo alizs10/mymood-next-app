@@ -16,3 +16,17 @@ export const getMoods = async () => {
    }
 
 }
+
+export const storeMood = async (mood) => {
+    try {
+        const {data, status} = await http.post(`${config['base_url']}/api/moods/store`, JSON.stringify(mood));
+    
+        if (status == 200) {
+            return data.mood
+        }
+       } catch (e) {
+           let error = Object.assign(e)
+    
+           console.log(error);
+       }
+}

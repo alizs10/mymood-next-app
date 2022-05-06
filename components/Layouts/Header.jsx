@@ -56,11 +56,11 @@ const Header = ({ toggleNav, setNavbarVisibility, user, handleLogout }) => {
                             {
                                 userDropdownVisibility ? (
                                     <span key={1}>
-                                        <i className="fa-light fa-angle-down"></i>
+                                        <i className="fa-light fa-angle-up"></i>
                                     </span>
                                 ) : (
                                     <span key={0}>
-                                        <i className="fa-light fa-angle-up"></i>
+                                        <i className="fa-light fa-angle-down"></i>
                                     </span>
                                 )
                             }

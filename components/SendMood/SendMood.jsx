@@ -1,14 +1,17 @@
 import { useState } from "react";
+import { useContext } from "react";
+import HomeContext from "../Context/HomeContext";
 import MoodEmojies from "./MoodEmojies";
 
-const SendMood = () => {
+const SendMood = ({ handleSendMood }) => {
 
-    const [mood, setMood] = useState("")
-    const [moodEmoji, setMoodEmoji] = useState(0)
-    
+    const { mood, setMood, moodEmoji, setMoodEmoji } = useContext(HomeContext)
+
     const moodLimit = 700;
     const [charLeft, setCharLeft] = useState(moodLimit)
     const [charLeftStatus, setCharLeftStatus] = useState("")
+
+
 
     const handleMoodChange = (mood) => {
 
@@ -31,12 +34,14 @@ const SendMood = () => {
 
     }
 
+
+
     return (
         <section className="flex flex-col mx-2 pb-4">
 
             <span className="text-xs text-slate-700 mb-2">مودت چیه؟</span>
-            
-            <MoodEmojies moodEmoji={moodEmoji} setMoodEmoji={setMoodEmoji}/>
+
+            <MoodEmojies moodEmoji={moodEmoji} setMoodEmoji={setMoodEmoji} />
 
             <textarea className="
               form-control
@@ -62,7 +67,7 @@ const SendMood = () => {
             <div className="flex justify-between mt-2 items-center">
                 <span className={`text-xxs ${charLeftStatus !== "" ? `text-${charLeftStatus}-400` : "text-slate-700"}`}>{charLeft}</span>
 
-                <button className="btn bg-amber-200 text-xs lg:text-base text-slate-700">
+                <button className="btn bg-amber-200 text-xs lg:text-base text-slate-700" onClick={() => handleSendMood({ mood, type: moodEmoji })}>
                     <i className="fa-light fa-paper-plane"></i>
                 </button>
             </div>

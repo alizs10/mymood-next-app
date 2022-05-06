@@ -1,31 +1,68 @@
-import { Router } from "next/router";
+import { useState, useEffect } from "react";
+import { useContext } from "react";
+import HomeContext from "../components/Context/HomeContext";
 import HomeLayout from "../components/Layouts/HomeLayout";
 import Moods from "../components/Moods/Moods";
-import { getMoods } from "../Services/app/moods/moodsServices";
+import { getMoods, storeMood } from "../Services/app/moods/moodsServices";
 import { isLoggedIn } from "../Services/app/user/userService";
 
-const Home = ({ loggedUser, moods }) => {
+const Home = ({ loggedUser, init_moods }) => {
 
-  setInterval(() => {
-    Router.replace(Router.asPath);
-  }, 60000)
+  const refreshIn = 60000;
+ 
+  const [moods, setMoods] = useState(init_moods)
+
+  const [mood, setMood] = useState("")
+  const [moodEmoji, setMoodEmoji] = useState(0)
+  
+
+  useEffect(() => {
+    
+    console.log(moods);
+    const interval = setInterval(() => {
+      handleRefreshData()
+    }, refreshIn);
+
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, [])
+
+  const handleRefreshData = async () => {
+    let moods = await getMoods()
+    setMoods(moods)
+
+  }
+
+  const handleSendMood = async (mood) => {
+
+    let newMood = mood
+    let res = await storeMood(newMood)
+    setMood("")
+    setMoodEmoji(0)
+    setMoods(prevState => ([
+      res, ...prevState
+    ]))
+
+  }
 
   return (
-    <HomeLayout loggedUser={loggedUser}>
+    <HomeContext.Provider value={{ moods, setMoods, mood, setMood, moodEmoji, setMoodEmoji }}>
+      <HomeLayout handleSendMood={handleSendMood} loggedUser={loggedUser}>
 
-      <Moods moods={moods} />
-    </HomeLayout>
+        <Moods />
+      </HomeLayout>
+    </HomeContext.Provider>
+
   );
 }
 
 export async function getServerSideProps({ req }) {
 
   const loggedUser = await isLoggedIn(req.headers.cookie)
-  const moods = await getMoods()
+  const init_moods = await getMoods()
 
   return {
     props: {
-      loggedUser, moods
+      loggedUser, init_moods
     },
   }
 }

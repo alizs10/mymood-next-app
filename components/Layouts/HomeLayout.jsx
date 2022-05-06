@@ -5,7 +5,7 @@ import SendMood from "../SendMood/SendMood";
 import Header from "./Header";
 import Nav from "./Nav";
 
-const HomeLayout = ({ children, loggedUser }) => {
+const HomeLayout = ({ children, loggedUser, handleSendMood }) => {
 
     const [user, setUser] = useState(loggedUser)
     const [navbarVisibility, setNavbarVisibility] = useState(false)
@@ -29,7 +29,7 @@ const HomeLayout = ({ children, loggedUser }) => {
             </AnimatePresence>
 
             <main className="mt-16 lg:mx-56">
-            {user && (<SendMood />)}
+            {user && (<SendMood handleSendMood={handleSendMood} />)}
                 {children}
 
             </main>
