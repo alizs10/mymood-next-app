@@ -9,7 +9,7 @@ import { isLoggedIn } from "../Services/app/user/userService";
 const Home = ({ loggedUser, init_moods }) => {
 
   const refreshIn = 60000;
- 
+  const [user, setUser] = useState(loggedUser)
   const [moods, setMoods] = useState(init_moods)
 
   const [mood, setMood] = useState("")
@@ -18,7 +18,6 @@ const Home = ({ loggedUser, init_moods }) => {
 
   useEffect(() => {
     
-    console.log(moods);
     const interval = setInterval(() => {
       handleRefreshData()
     }, refreshIn);
@@ -45,7 +44,7 @@ const Home = ({ loggedUser, init_moods }) => {
   }
 
   return (
-    <HomeContext.Provider value={{ moods, setMoods, mood, setMood, moodEmoji, setMoodEmoji }}>
+    <HomeContext.Provider value={{ moods, setMoods, mood, setMood, moodEmoji, setMoodEmoji, user, setUser }}>
       <HomeLayout handleSendMood={handleSendMood} loggedUser={loggedUser}>
 
         <Moods />

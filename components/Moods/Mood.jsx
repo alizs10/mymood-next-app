@@ -1,11 +1,88 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import moment from 'jalali-moment'
+import { useEffect } from "react";
+import { useContext } from "react";
+import HomeContext from "../Context/HomeContext";
+import { likeMood, unlikeMood } from "../../Services/app/moods/moodsServices";
+
 const Mood = ({ mood }) => {
 
-    const [isLiked, setIsLiked] = useState(true)
+    const [isLiked, setIsLiked] = useState(false)
+    const [likes, setlikes] = useState(mood.likes_value)
+    const { user } = useContext(HomeContext)
 
-    const handleLikeBtn = () => {
+    useEffect(() => {
+
+        let unmounted = false;
+
+        if (!unmounted) checkUserLiked()
+
+        return () => {
+            unmounted = true;
+        }
+
+
+    }, [])
+
+    useEffect(() => {
+        let unmounted = false;
+        if (!unmounted) {
+            console.log("now");
+            checkUserLiked()
+
+        }
+
+        return () => {
+            unmounted = true
+        }
+    }, [user])
+
+    const checkUserLiked = () => {
+        let users_likes_ids = mood.users_likes_ids;
+        let isLoggedIn = user;
+
+        if (!isLoggedIn) {
+            setIsLiked(false)
+            return
+        }
+
+        let isUserLiked = users_likes_ids.filter(id => user.id === id);
+        if (isUserLiked.length > 0) {
+            setIsLiked(true)
+            return
+        }
+
+        setIsLiked(false)
+    }
+
+    const handleLikeBtn = async () => {
+
+        if (!user) {
+            alert("login first you mother fucker")
+            return
+        }
+
+
+        let oldLikes = likes;
+        if (!isLiked) {
+            setIsLiked(true)
+            setlikes(likes += 1)
+            const res = await likeMood(mood.id)
+            if (!res) {
+                setIsLiked(false)
+                setlikes(oldLikes)
+            }
+            return;
+        }
+        setlikes(likes -= 1)
         setIsLiked(!isLiked)
+        const res = await unlikeMood(mood.id)
+        if (!res) {
+            setIsLiked(true)
+            setlikes(oldLikes)
+        }
+
     }
 
     const emojies = {
@@ -31,7 +108,7 @@ const Mood = ({ mood }) => {
 
                 <div className="flex gap-x-4 items-center">
                     <div className="flex gap-x-2 items-center text-slate-700">
-                        <span className={`text-xxs hover-transition ${isLiked && "text-red-500"}`}>12</span>
+                        <span className={`text-xxs hover-transition ${isLiked && "text-red-500"}`}>{likes}</span>
 
                         {
                             isLiked ? (
@@ -50,11 +127,23 @@ const Mood = ({ mood }) => {
                         }
 
 
-                        <button className="text-sm flex-center">
-                            <i className="fa-light fa-brake-warning"></i>
-                        </button>
+                        {(user && user.id === mood.user_id) ? (
+                            <button className="text-sm flex-center">
+
+                                <span key={0}>
+                                    <i className="fa-light fa-trash"></i>
+                                </span>
+                            </button>
+                        ) : (
+                            <button className="text-sm flex-center">
+
+                                <span key={1}>
+                                    <i className="fa-light fa-brake-warning"></i>
+                                </span>
+                            </button>
+                        )}
                     </div>
-                    <span className="text-xxs text-slate-700">3 دقیقه پیش</span>
+                    <span className="text-xxs text-slate-700">{moment(mood.created_at).locale('fa').fromNow()}</span>
                 </div>
 
             </div>

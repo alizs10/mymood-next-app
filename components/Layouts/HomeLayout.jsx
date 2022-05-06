@@ -1,13 +1,15 @@
 import { AnimatePresence } from "framer-motion";
 import { Fragment, useState } from "react";
+import { useContext } from "react";
 import { logoutUser } from "../../Services/app/user/userService";
+import HomeContext from "../Context/HomeContext";
 import SendMood from "../SendMood/SendMood";
 import Header from "./Header";
 import Nav from "./Nav";
 
-const HomeLayout = ({ children, loggedUser, handleSendMood }) => {
+const HomeLayout = ({ children, handleSendMood }) => {
 
-    const [user, setUser] = useState(loggedUser)
+    const { user, setUser } = useContext(HomeContext)
     const [navbarVisibility, setNavbarVisibility] = useState(false)
 
     const toggleNav = () => {
@@ -29,7 +31,7 @@ const HomeLayout = ({ children, loggedUser, handleSendMood }) => {
             </AnimatePresence>
 
             <main className="mt-16 lg:mx-56">
-            {user && (<SendMood handleSendMood={handleSendMood} />)}
+                {user && (<SendMood handleSendMood={handleSendMood} />)}
                 {children}
 
             </main>
