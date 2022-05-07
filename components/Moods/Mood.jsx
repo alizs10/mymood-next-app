@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import HomeContext from "../Context/HomeContext";
 import { likeMood, unlikeMood } from "../../Services/app/moods/moodsServices";
+import { confirm, notify } from "../../Services/lib/alerts";
 
 const Mood = ({ mood }) => {
 
@@ -96,6 +97,10 @@ const Mood = ({ mood }) => {
         7: "fa-light fa-face-meh text-slate-700",
     };
 
+    const handleDelMood = (mood_id) => {
+        confirm("از حذف مود خود مطمئن هستید", "حذف مود", () => alert("deleted"), () => alert("canceled"))
+    }
+
 
     return (
         <div className="mood">
@@ -128,7 +133,7 @@ const Mood = ({ mood }) => {
 
 
                         {(user && user.id === mood.user_id) ? (
-                            <button className="text-sm flex-center">
+                            <button className="text-sm flex-center" onClick={() => handleDelMood(mood.id)}>
 
                                 <span key={0}>
                                     <i className="fa-light fa-trash"></i>

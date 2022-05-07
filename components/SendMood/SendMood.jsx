@@ -5,13 +5,7 @@ import MoodEmojies from "./MoodEmojies";
 
 const SendMood = ({ handleSendMood }) => {
 
-    const { mood, setMood, moodEmoji, setMoodEmoji } = useContext(HomeContext)
-
-    const moodLimit = 700;
-    const [charLeft, setCharLeft] = useState(moodLimit)
-    const [charLeftStatus, setCharLeftStatus] = useState("")
-
-
+    const { mood, setMood, moodEmoji, setMoodEmoji, charLeft, setCharLeft, charLeftStatus, setCharLeftStatus, moodLimit } = useContext(HomeContext)
 
     const handleMoodChange = (mood) => {
 

@@ -1,11 +1,14 @@
 import cookie from "cookie";
 import Cookies from "js-cookie";
+import http from "../../http";
+import config from "../../config.json";
 import { getUser, logout } from "../auth/authServices";
+import axios from "axios";
 
 export const loginUser = (token) => {
 
     Cookies.set("_token", token)
-
+    axios.defaults.headers['Authorization'] = `Bearer ${token}`;
 }
 
 export const isLoggedIn = async (reqCookies = null) => {
@@ -53,4 +56,26 @@ export const logoutUser = async () => {
     }
 
     return false
+}
+
+export const getUserProfileInfo = async (reqCookies) => {
+    
+    let token = cookie.parse(reqCookies)._token
+
+    console.log(token);
+    try {
+        const { data, status } = await http.get(`${config['base_url']}/api/profile`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        console.log(data);
+        if (status == 200) {
+            return data
+        }
+    } catch (e) {
+        let error = Object.assign(e)
+
+        console.log(error);
+    }
 }

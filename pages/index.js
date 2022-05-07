@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useContext } from "react";
 import HomeContext from "../components/Context/HomeContext";
 import HomeLayout from "../components/Layouts/HomeLayout";
 import Moods from "../components/Moods/Moods";
+import SendMood from "../components/SendMood/SendMood";
 import { getMoods, storeMood } from "../Services/app/moods/moodsServices";
 import { isLoggedIn } from "../Services/app/user/userService";
 
@@ -15,9 +15,12 @@ const Home = ({ loggedUser, init_moods }) => {
   const [mood, setMood] = useState("")
   const [moodEmoji, setMoodEmoji] = useState(0)
   
+  const moodLimit = 700;
+  const [charLeft, setCharLeft] = useState(moodLimit)
+  const [charLeftStatus, setCharLeftStatus] = useState("")
 
   useEffect(() => {
-    
+
     const interval = setInterval(() => {
       handleRefreshData()
     }, refreshIn);
@@ -36,6 +39,8 @@ const Home = ({ loggedUser, init_moods }) => {
     let newMood = mood
     let res = await storeMood(newMood)
     setMood("")
+    setCharLeft(moodLimit)
+    setCharLeftStatus("0")
     setMoodEmoji(0)
     setMoods(prevState => ([
       res, ...prevState
@@ -44,10 +49,10 @@ const Home = ({ loggedUser, init_moods }) => {
   }
 
   return (
-    <HomeContext.Provider value={{ moods, setMoods, mood, setMood, moodEmoji, setMoodEmoji, user, setUser }}>
+    <HomeContext.Provider value={{ moods, setMoods, mood, setMood, moodEmoji, setMoodEmoji, user, setUser, charLeft, setCharLeft, charLeftStatus, setCharLeftStatus, moodLimit }}>
       <HomeLayout handleSendMood={handleSendMood} loggedUser={loggedUser}>
-
-        <Moods />
+        {user && (<SendMood handleSendMood={handleSendMood} />)}
+        <Moods moods={moods} />
       </HomeLayout>
     </HomeContext.Provider>
 
