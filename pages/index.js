@@ -13,7 +13,7 @@ const Home = ({ loggedUser, init_moods }) => {
   const [moods, setMoods] = useState(init_moods)
 
   const [mood, setMood] = useState("")
-  const [moodEmoji, setMoodEmoji] = useState(0)
+  const [moodEmoji, setMoodEmoji] = useState(1)
   
   const moodLimit = 700;
   const [charLeft, setCharLeft] = useState(moodLimit)

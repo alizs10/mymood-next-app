@@ -4,14 +4,14 @@ import moment from 'jalali-moment'
 import { useEffect } from "react";
 import { useContext } from "react";
 import HomeContext from "../Context/HomeContext";
-import { likeMood, unlikeMood } from "../../Services/app/moods/moodsServices";
-import { confirm, notify } from "../../Services/lib/alerts";
+import { deleteMood, likeMood, unlikeMood } from "../../Services/app/moods/moodsServices";
+import { confirm, SwalNotify } from "../../Services/lib/alerts";
 
 const Mood = ({ mood }) => {
 
     const [isLiked, setIsLiked] = useState(false)
     const [likes, setlikes] = useState(mood.likes_value)
-    const { user } = useContext(HomeContext)
+    const { user, moods, setMoods } = useContext(HomeContext)
 
     useEffect(() => {
 
@@ -98,7 +98,17 @@ const Mood = ({ mood }) => {
     };
 
     const handleDelMood = (mood_id) => {
-        confirm("از حذف مود خود مطمئن هستید", "حذف مود", () => alert("deleted"), () => alert("canceled"))
+        confirm(
+            "از حذف مود خود مطمئن هستید",
+            "حذف مود",
+            async () => {
+              let isDeleted = await deleteMood(mood_id)
+              if (isDeleted) {
+                  let filteredMoods = moods.filter(mood => mood.id !== mood_id);
+                  setMoods(filteredMoods)
+                  SwalNotify("حذف شد", "مود مورد نظر شما با موفقیت حذف شد", "success")
+              }
+            })
     }
 
 

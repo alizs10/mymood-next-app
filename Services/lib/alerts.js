@@ -26,8 +26,22 @@ export const notify = (message, type) => {
             break;
     }
 }
+export const SwalNotify = (title, message, type) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn bg-emerald-400',
+            cancelButton: 'btn bg-red-500'
+        },
+        buttonsStyling: true
+    })
+    swalWithBootstrapButtons.fire(
+        title,
+        message,
+        type
+    )
+}
 
-export const confirm = (message, title, success, cancel) => {
+export const confirm = (message, title, success, cancel = null) => {
 
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -48,16 +62,13 @@ export const confirm = (message, title, success, cancel) => {
     }).then((result) => {
         if (result.isConfirmed) {
             success()
-            swalWithBootstrapButtons.fire(
-                'حذف شد',
-                'مود شما با موفقیت حذف شد',
-                'success'
-            )
         } else if (
             /* Read more about handling dismissals below */
             result.dismiss === Swal.DismissReason.cancel
         ) {
-            cancel()
+            if (cancel) {
+                cancel()
+            }
             swalWithBootstrapButtons.fire(
                 'انصراف',
                 'درخواست شما لغو شد',
