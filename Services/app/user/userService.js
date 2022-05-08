@@ -79,3 +79,18 @@ export const getUserProfileInfo = async (reqCookies) => {
         console.log(error);
     }
 }
+
+export const updateBio = async (bio) => {
+    
+    try {
+        const { data, status } = await http.post(`${config['base_url']}/api/profile/update`, JSON.stringify(bio));
+        
+        if (status == 200) {
+            return data
+        }
+    } catch (e) {
+        let error = Object.assign(e)
+
+        console.log(error);
+    }
+}

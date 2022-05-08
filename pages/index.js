@@ -41,7 +41,7 @@ const Home = ({ loggedUser, init_moods }) => {
     setMood("")
     setCharLeft(moodLimit)
     setCharLeftStatus("0")
-    setMoodEmoji(0)
+    setMoodEmoji(1)
     setMoods(prevState => ([
       res, ...prevState
     ]))
