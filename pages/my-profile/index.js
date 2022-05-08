@@ -14,7 +14,7 @@ export default function MyProfilePage({ loggedUser, moods }) {
         <HomeContext.Provider value={{ user, setUser }}>
             <HomeLayout>
                 <UserProfile pageType="0" user={user} />
-                <Moods moods={moods} />
+                <Moods moods={moods} pageType={0} />
             </HomeLayout>
         </HomeContext.Provider>
 

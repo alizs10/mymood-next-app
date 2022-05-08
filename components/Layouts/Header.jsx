@@ -46,7 +46,7 @@ const Header = ({ toggleNav, setNavbarVisibility, user, handleLogout }) => {
                 {
                     !user ? (
                         <Link href="/login">
-                            <button className="btn bg-blue-700 text-slate-100">
+                            <button className="text-blue-600 text-xl">
                                 <i className="fa-regular fa-arrow-right-to-bracket"></i>
                             </button>
                         </Link>

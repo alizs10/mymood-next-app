@@ -35,7 +35,7 @@ const HomeLayout = ({ children }) => {
                 {navbarVisibility && (<Nav user={user} />)}
             </AnimatePresence>
 
-            <main className="mt-16 lg:mx-56">
+            <main className="mt-20 lg:mx-56 relative flex flex-col gap-y-2">
 
                 {children}
 

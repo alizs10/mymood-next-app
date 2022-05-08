@@ -89,12 +89,12 @@ const Mood = ({ mood }) => {
     const emojies = {
         0: "fa-light fa-face-frown-slight text-gray-400",
         1: "fa-light fa-face-laugh text-emerald-400",
-        2: "fa-light fa-face-mask",
-        3: "fa-light fa-face-sleeping",
-        4: "fa-light fa-face-angry",
-        5: "fa-light fa-face-anxious-sweat",
-        6: "fa-light fa-face-expressionless",
-        7: "fa-light fa-face-meh text-slate-700",
+        2: "fa-light fa-face-mask text-blue-400",
+        3: "fa-light fa-face-sleeping text-blue-800",
+        4: "fa-light fa-face-angry text-red-400",
+        5: "fa-light fa-face-anxious-sweat text-orange-400",
+        6: "fa-light fa-face-expressionless text-slate-600",
+        7: "fa-light fa-face-meh text-black",
     };
 
     const handleDelMood = (mood_id) => {

@@ -1,34 +1,47 @@
-import { isEmpty } from "lodash";
 
 const UserProfile = ({ pageType, user }) => {
 
     return (
-        <section className="grid grid-cols-5 gap-x-2 sm:grid-cols-10 md:grid-cols-6 lg:grid-cols-12 text-slate-700 mx-2">
+        <section className="grid grid-cols-4 md:grid-cols-8 items-center md:items-start gap-2 text-slate-700 mx-2">
 
-            <div className="col-span-1 sm:col-span-2 md:col-span-1 lg:col-span-2 flex items-center">
-                <div className="rounded-lg w-full flex-center bg-slate-200 drop-shadow-lg p-4 sm:p-5 md:p-6">
+            <div className="col-span-1 md:col-span-2 flex items-center">
+                <div className="rounded-xl w-full flex-center border-2 p-4 sm:p-5 md:p-6">
                     <i className="fa-light fa-face-meh-blank text-4xl sm:text-6xl md:text-7xl"></i>
                 </div>
             </div>
 
-            <div className="col-span-4 sm:col-span-8 md:col-span-5 lg:col-span-10 grid grid-rows-2 lg:grid-rows-3 mt-4">
-                <div className="row-span-1 flex justify-between gap-y-2 lg:gap-y-4">
-                    <span className="text-sm lg:text-base font-bold">{`کاربر ${user.id}`}</span>
-                    {pageType == "0" ? (
-                        <button className="btn border-2 h-fit border-amber-400 text-amber-500 flex-center text-xs">
-                            <i className="fa-light fa-pen text-base"></i>
-                            <span className="mr-2 hidden md:block">ویرایش</span>
-                        </button>
-                    ) : (
-                        <button className="btn border-2 h-fit border-amber-400 text-amber-500 flex-center text-xs">
-                            <i className="fa-light fa-user-plus text-base"></i>
-                            <span className="mr-2 hidden md:block">دنبال کردن</span>
-                        </button>
-                    )}
+            <div className="col-span-3 md:col-span-2 flex flex-col gap-y-2">
+                <span className="text-sm lg:text-base font-bold">{`کاربر ${user.id}`}</span>
+                <span className="text-xs lg:text-sm text-gray-500">جهنم یخ زده تو دلم ...</span>
+            </div>
 
 
+            <div className="col-span-4 grid grid-cols-4 gap-y-2 lg:gap-y-4">
+                <div className="col-span-4 flex gap-x-2 justify-evenly">
+                    <span className="flex flex-col gap-1 text-xs text-center">
+                        <span className="font-bold text-sm">23</span>
+                        <span>مود ها</span>
+                    </span>
+                    <span className="flex flex-col gap-1 text-xs text-center">
+                        <span className="font-bold text-sm">102</span>
+                        <span>دنبال کنندگان</span>
+                    </span>
+                    <span className="flex flex-col gap-1 text-xs text-center">
+                        <span className="font-bold text-sm">12</span>
+                        <span>دنبال کردن</span>
+                    </span>
                 </div>
-                <span className="row-span-1 text-xs lg:text-sm text-gray-500">{isEmpty(user.bio) ? "درباره خود بنویسید" : user.bio}</span>
+                {pageType == "0" ? (
+                    <button className="col-span-4 btn border-2 h-fit border-amber-400 text-amber-500 flex-center text-xs">
+                        <i className="fa-light fa-edit text-base"></i>
+                        <span className="mr-2">ویرایش کردن</span>
+                    </button>
+                ) : (
+                    <button className="col-span-4 btn border-2 h-fit border-amber-400 text-amber-500 flex-center text-xs">
+                        <i className="fa-light fa-user-plus text-base"></i>
+                        <span className="mr-2">دنبال کردن</span>
+                    </button>
+                )}
             </div>
 
         </section>

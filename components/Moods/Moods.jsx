@@ -1,6 +1,7 @@
+import { isNull } from "lodash";
 import Mood from "./Mood";
 
-const Moods = ({moods}) => {
+const Moods = ({moods, pageType = null}) => {
 
     return (
         <section className="flex flex-col gap-y-4 mx-2 pb-4">
@@ -46,6 +47,14 @@ const Moods = ({moods}) => {
                 {moods.map(mood => (
                     <Mood key={mood.id} mood={mood} />
                 ))}
+
+                {(moods.length === 0  && isNull(pageType)) && (
+                    <span className="text-xs">در به اشتراک گذاشتن مود خود اولین نفر باشید :)</span>
+                )}
+
+                {(moods.length === 0  && pageType === 0) && (
+                    <span className="text-xs">هنوز مودی به اشتراک نذاشتی ...</span>
+                )}
 
             </div>
 
