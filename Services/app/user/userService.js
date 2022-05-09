@@ -59,7 +59,7 @@ export const logoutUser = async () => {
 }
 
 export const getUserProfileInfo = async (reqCookies) => {
-    
+
     let token = cookie.parse(reqCookies)._token
 
     console.log(token);
@@ -81,13 +81,78 @@ export const getUserProfileInfo = async (reqCookies) => {
 }
 
 export const updateBio = async (bio) => {
-    
+
     try {
         const { data, status } = await http.post(`${config['base_url']}/api/profile/update`, JSON.stringify(bio));
-        
+
         if (status == 200) {
             return data
         }
+    } catch (e) {
+        let error = Object.assign(e)
+
+        console.log(error);
+    }
+}
+
+export const getUsersIds = async () => {
+    try {
+        const { data, status } = await http.get(`${config['base_url']}/api/users`);
+
+        if (status == 200) {
+            return data.users
+        }
+
+    } catch (e) {
+        let error = Object.assign(e)
+
+        console.log(error);
+    }
+}
+
+export const getUserInfos = async (user_id, reqCookies) => {
+    let token = cookie.parse(reqCookies)._token
+    try {
+        const { data, status } = await http.get(`${config['base_url']}/api/users/${user_id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (status == 200) {
+            return data
+        }
+
+    } catch (e) {
+        let error = Object.assign(e)
+
+        console.log(error);
+    }
+}
+
+export const follow = async (user_followed_id) => {
+    try {
+        const { data, status } = await http.get(`${config['base_url']}/api/users/${user_followed_id}/follow`);
+
+        if (status == 200) {
+            return data
+        }
+
+    } catch (e) {
+        let error = Object.assign(e)
+
+        console.log(error);
+    }
+}
+
+export const unfollow = async (user_unfollowed_id) => {
+    try {
+        const { data, status } = await http.get(`${config['base_url']}/api/users/${user_unfollowed_id}/unfollow`);
+
+        if (status == 200) {
+            return data
+        }
+
     } catch (e) {
         let error = Object.assign(e)
 

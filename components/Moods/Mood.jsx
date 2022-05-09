@@ -6,6 +6,7 @@ import { useContext } from "react";
 import HomeContext from "../Context/HomeContext";
 import { deleteMood, likeMood, unlikeMood } from "../../Services/app/moods/moodsServices";
 import { confirm, SwalNotify } from "../../Services/lib/alerts";
+import Link from 'next/link';
 
 const Mood = ({ mood }) => {
 
@@ -102,12 +103,12 @@ const Mood = ({ mood }) => {
             "از حذف مود خود مطمئن هستید",
             "حذف مود",
             async () => {
-              let isDeleted = await deleteMood(mood_id)
-              if (isDeleted) {
-                  let filteredMoods = moods.filter(mood => mood.id !== mood_id);
-                  setMoods(filteredMoods)
-                  SwalNotify("حذف شد", "مود مورد نظر شما با موفقیت حذف شد", "success")
-              }
+                let isDeleted = await deleteMood(mood_id)
+                if (isDeleted) {
+                    let filteredMoods = moods.filter(mood => mood.id !== mood_id);
+                    setMoods(filteredMoods)
+                    SwalNotify("حذف شد", "مود مورد نظر شما با موفقیت حذف شد", "success")
+                }
             })
     }
 
@@ -118,7 +119,13 @@ const Mood = ({ mood }) => {
             <div className="flex justify-between items-center">
                 <div className="flex gap-x-2 items-center">
                     <i className={`${emojies[mood.type]} text-4xl`}></i>
-                    <a href="" className="text-sm">{`کاربر ${mood.user_id}`}</a>
+                    {mood.user_id === user.id ? (
+                        <Link href="/my-profile" className="text-sm">{`کاربر ${mood.user_id}`}</Link>
+
+                    ) : (
+
+                        <Link href="/users/[userId]" as={`/users/${mood.user_id.toString()}`} className="text-sm">{`کاربر ${mood.user_id}`}</Link>
+                    )}
                 </div>
 
                 <div className="flex gap-x-4 items-center">

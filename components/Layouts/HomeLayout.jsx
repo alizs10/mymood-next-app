@@ -26,6 +26,7 @@ const HomeLayout = ({ children }) => {
             setUser(false)
         }
     }
+    console.log(user);
 
     return (
         <Fragment>
@@ -45,7 +46,7 @@ const HomeLayout = ({ children }) => {
                 <p className="text-slate-700 text-xs lg:text-sm w-full text-center">copyright 2022</p>
             </footer>
             <ToastContainer />
-            
+
         </Fragment>
     );
 }

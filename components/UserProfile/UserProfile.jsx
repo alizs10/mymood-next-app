@@ -1,6 +1,6 @@
 import { isNull } from "lodash";
 
-const UserProfile = ({ pageType, user, moodLength,followers, followings, setUserSettingsVisibility }) => {
+const UserProfile = ({ pageType, user, moodLength, followers, followings, setUserSettingsVisibility, isFollowed, handleFollowUser, handleUnFollowUser }) => {
 
     return (
         <section className="grid grid-cols-4 md:grid-cols-8 items-center md:items-start gap-2 text-slate-700 mx-2">
@@ -38,10 +38,21 @@ const UserProfile = ({ pageType, user, moodLength,followers, followings, setUser
                         <span className="mr-2">ویرایش کردن</span>
                     </button>
                 ) : (
-                    <button className="col-span-4 btn border-2 h-fit border-amber-400 text-amber-500 flex-center text-xs">
-                        <i className="fa-light fa-user-plus text-base"></i>
-                        <span className="mr-2">دنبال کردن</span>
-                    </button>
+                    isFollowed ? (
+                        <button className="col-span-4 btn border-2 h-fit border-amber-400 text-amber-500 flex-center text-xs" onClick={() => handleUnFollowUser(user.id)}>
+                            <span key={0}>
+                                <i className="fa-light fa-user-check text-base"></i>
+                            </span>
+                            <span className="mr-2">دنبال نکردن</span>
+                        </button>
+                    ) : (
+                        <button className="col-span-4 btn border-2 h-fit border-amber-400 text-amber-500 flex-center text-xs" onClick={() => handleFollowUser(user.id)}>
+                            <span key={1}>
+                                <i className="fa-light fa-user-plus text-base"></i>
+                            </span>
+                            <span className="mr-2">دنبال کردن</span>
+                        </button>
+                    )
                 )}
             </div>
 
