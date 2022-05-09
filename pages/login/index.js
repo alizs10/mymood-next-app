@@ -5,7 +5,8 @@ import AuthLayout from "../../components/Auth/AuthLayout";
 import LoginForm from "../../components/Auth/LoginForm";
 import PasswordForm from "../../components/Auth/PasswordForm";
 import ResultMessage from "../../components/Auth/ResultMessage";
-import { checkEmail, login, register } from "../../Services/app/auth/authServices";
+import VerificationCodeForm from "../../components/Auth/VerificationCodeForm";
+import { checkEmail, checkVCode, login, register } from "../../Services/app/auth/authServices";
 import { isLoggedIn, loginUser } from "../../Services/app/user/userService";
 
 export default function LoginPage() {
@@ -15,9 +16,11 @@ export default function LoginPage() {
     const [passwordConfirmation, setPasswordConfirmation] = useState("")
 
     const [checkEmailRes, setCheckEmailRes] = useState("")
+    const [vcodeRes, setVCodeRes] = useState(false)
     const [resMessage, setResMessage] = useState("")
 
     const router = useRouter();
+
 
     const handleCheckEmail = async (e) => {
         e.preventDefault();
@@ -28,7 +31,7 @@ export default function LoginPage() {
         try {
             const { data, status } = await checkEmail(formData)
             setCheckEmailRes(data.status)
-            data.status ? setResMessage("برای ورود به حساب کاربری خود، کلمه عبور را وارد کنید") : setResMessage("برای ثبت نام، کلمه عبور خود را تعیین کنید")
+            data.status ? setResMessage("برای ورود به حساب کاربری خود، کلمه عبور را وارد کنید") : setResMessage("کد تایید به ایمیل شما ارسال شد")
         } catch (error) {
             console.log(error);
         }
@@ -49,8 +52,8 @@ export default function LoginPage() {
         try {
             const { data, status } = await register(formData)
 
-            if (status == 200 & data.user) {
-
+            if (status == 200) {
+                setCheckEmailRes(true)
             }
 
         } catch (error) {
@@ -78,16 +81,39 @@ export default function LoginPage() {
         }
 
     }
+
+    const handleCheckVCode = async (vcode) => {
+
+        const form = new FormData();
+        form.append("email", email);
+        form.append("verification_code", vcode);
+    
+        try {
+            const {data, status} = await checkVCode(form)
+            if (status == 200) {
+                setVCodeRes(true)
+            }
+        } catch (error) {
+            
+        }
+
+    }
+
+
     return (
         <AuthLayout>
             <AnimatePresence>
                 {checkEmailRes === "" ? (
                     <LoginForm email={email} setEmail={setEmail} handleCheckEmail={handleCheckEmail} />
                 ) : (
-                    <div className="flex flex-col gap-y-2">
-                        <ResultMessage message={resMessage} />
+                    !vcodeRes ? (
+                        <div className="flex flex-col gap-y-2">
+                            <ResultMessage message={resMessage} />
+                            <VerificationCodeForm handleCheckVCode={handleCheckVCode} />
+                        </div>
+                    ) : (
                         <PasswordForm handleSubmit={handleSubmit} password={password} setPassword={setPassword} passwordConfirmation={passwordConfirmation} setPasswordConfirmation={setPasswordConfirmation} checkEmailRes={checkEmailRes} />
-                    </div>
+                    )
                 )}
             </AnimatePresence>
         </AuthLayout>
@@ -108,6 +134,6 @@ export async function getServerSideProps({ req }) {
         }
     }
 
-    return {props: {}}
+    return { props: {} }
 
 }

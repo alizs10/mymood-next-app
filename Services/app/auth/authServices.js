@@ -7,11 +7,17 @@ export const checkEmail = async (form) => {
         return await http.post(`${config["base_url"]}/api/check-email`, form)
     });
 }
+export const checkVCode = async (form) => {
+
+    return await http.get(`${config["base_url"]}/sanctum/csrf-cookie`).then(async response => {
+        return await http.post(`${config["base_url"]}/api/check-verification-code`, form)
+    });
+}
 
 export const register = async (form) => {
 
     return await http.get(`${config["base_url"]}/sanctum/csrf-cookie`).then(async response => {
-        return await http.post(`${config["base_url"]}/api/register`, form)
+        return await http.post(`${config["base_url"]}/api/set-password`, form)
     });
 }
 
