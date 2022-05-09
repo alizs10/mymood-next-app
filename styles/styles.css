@@ -613,12 +613,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 0.5rem;
 }
 
-.mr-2{
-  margin-right: 0.5rem;
-}
-
 .mt-20{
   margin-top: 5rem;
+}
+
+.mr-2{
+  margin-right: 0.5rem;
 }
 
 .block{
@@ -722,6 +722,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 .columns-3{
   -moz-columns: 3;
        columns: 3;
+}
+
+.grid-cols-6{
+  grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
 .grid-cols-4{
