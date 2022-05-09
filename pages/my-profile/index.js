@@ -1,5 +1,6 @@
 
 import { AnimatePresence } from "framer-motion";
+import { isEmpty } from "lodash";
 import { useState } from "react";
 import HomeContext from "../../components/Context/HomeContext";
 import BlurBackgtuond from "../../components/Layouts/BlurBackground";
@@ -13,7 +14,7 @@ import { SwalNotify } from "../../Services/lib/alerts";
 export default function MyProfilePage({ loggedUser, moods, followers, followings }) {
 
     const [user, setUser] = useState(loggedUser)
-    const [bio, setBio] = useState(loggedUser.bio)
+    const [bio, setBio] = useState(isEmpty(loggedUser.bio) ? "" : loggedUser.bio)
     const [userSettingsWindowVisibility, setUserSettingsVisibility] = useState(false)
 
     const handleUpdateBio = async () => {

@@ -31,6 +31,7 @@ export default function LoginPage() {
         try {
             const { data, status } = await checkEmail(formData)
             setCheckEmailRes(data.status)
+            if (data.status) setVCodeRes(true)
             data.status ? setResMessage("برای ورود به حساب کاربری خود، کلمه عبور را وارد کنید") : setResMessage("کد تایید به ایمیل شما ارسال شد")
         } catch (error) {
             console.log(error);
@@ -53,6 +54,7 @@ export default function LoginPage() {
             const { data, status } = await register(formData)
 
             if (status == 200) {
+                setResMessage("ثبت نام شما با موفقیت انجام شد. می توانید وارد شوید")
                 setCheckEmailRes(true)
             }
 
@@ -87,14 +89,15 @@ export default function LoginPage() {
         const form = new FormData();
         form.append("email", email);
         form.append("verification_code", vcode);
-    
+
         try {
-            const {data, status} = await checkVCode(form)
+            const { data, status } = await checkVCode(form)
             if (status == 200) {
+                setResMessage("برای تکمیل ثبت نام خود، کلمه عبور را تعیین کنید")
                 setVCodeRes(true)
             }
         } catch (error) {
-            
+
         }
 
     }
@@ -104,7 +107,10 @@ export default function LoginPage() {
         <AuthLayout>
             <AnimatePresence>
                 {checkEmailRes === "" ? (
-                    <LoginForm email={email} setEmail={setEmail} handleCheckEmail={handleCheckEmail} />
+                    <div className="flex flex-col gap-y-2">
+                        <ResultMessage message={resMessage} />
+                        <LoginForm email={email} setEmail={setEmail} handleCheckEmail={handleCheckEmail} />
+                    </div>
                 ) : (
                     !vcodeRes ? (
                         <div className="flex flex-col gap-y-2">
@@ -112,7 +118,10 @@ export default function LoginPage() {
                             <VerificationCodeForm handleCheckVCode={handleCheckVCode} />
                         </div>
                     ) : (
-                        <PasswordForm handleSubmit={handleSubmit} password={password} setPassword={setPassword} passwordConfirmation={passwordConfirmation} setPasswordConfirmation={setPasswordConfirmation} checkEmailRes={checkEmailRes} />
+                        <div className="flex flex-col gap-y-2">
+                            <ResultMessage message={resMessage} />
+                            <PasswordForm handleSubmit={handleSubmit} password={password} setPassword={setPassword} passwordConfirmation={passwordConfirmation} setPasswordConfirmation={setPasswordConfirmation} checkEmailRes={checkEmailRes} />
+                        </div>
                     )
                 )}
             </AnimatePresence>

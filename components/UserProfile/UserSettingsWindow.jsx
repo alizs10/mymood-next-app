@@ -40,7 +40,7 @@ const UserSettingsWindow = ({ handleUpdateBio, setUserSettingsVisibility, bio, s
             <div className="flex flex-col gap-y-2 mt-4">
 
                 <div className="flex flex-col gap-y-1 border p-2 rounded-lg">
-                    <label className="text-gray-700 text-xs" for="bio">درباره شما</label>
+                    <label className="text-gray-700 text-xs" htmlFor="bio">درباره شما</label>
                     <input type="bio" value={bio} onChange={(event) => setBio(event.target.value) } className="form-control block w-full px-3 py-2 text-base font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid rounded-lg transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-amber-400 focus:outline-none placeholder:text-xxs" placeholder="چند کلمه درمورد خودت ..." />
 
                 </div>
