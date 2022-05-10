@@ -8,10 +8,12 @@ import ResultMessage from "../../components/Auth/ResultMessage";
 import VerificationCodeForm from "../../components/Auth/VerificationCodeForm";
 import { checkEmail, checkVCode, login, register } from "../../Services/app/auth/authServices";
 import { isLoggedIn, loginUser } from "../../Services/app/user/userService";
+import { emailValidator, passwordValidator, passwordWithConfirmationValidator, vcodeValidator } from "../../Services/app/validators/authValidator";
 
 export default function LoginPage() {
 
     const [loading, setLoading] = useState(false)
+    const [errors, setErrors] = useState({})
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -31,17 +33,26 @@ export default function LoginPage() {
 
         setLoading(true)
 
-        var formData = new FormData();
-        formData.append('email', email);
+        const validator = emailValidator({ email })
 
-        try {
-            const { data, status } = await checkEmail(formData)
-            setCheckEmailRes(data.status)
-            if (data.status) setVCodeRes(true)
-            data.status ? setResMessage("برای ورود به حساب کاربری خود، کلمه عبور را وارد کنید") : setResMessage("کد تایید به ایمیل شما ارسال شد")
-        } catch (error) {
-            console.log(error);
+        if (validator.success) {
+            setErrors({})
+            var formData = new FormData();
+            formData.append('email', email);
+
+            try {
+                const { data, status } = await checkEmail(formData)
+                setCheckEmailRes(data.status)
+                if (data.status) setVCodeRes(true)
+                data.status ? setResMessage("برای ورود به حساب کاربری خود، کلمه عبور را وارد کنید") : setResMessage("کد تایید به ایمیل شما ارسال شد")
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            setErrors(validator.errors)
         }
+
+
 
         setLoading(false)
     }
@@ -56,21 +67,29 @@ export default function LoginPage() {
         if (loading) return;
 
         setLoading(true)
-        var formData = new FormData();
-        formData.append('email', email);
-        formData.append('password', password);
-        formData.append('password_confirmation', passwordConfirmation);
 
-        try {
-            const { data, status } = await register(formData)
+        const validator = passwordWithConfirmationValidator({ password, password_confirmation: passwordConfirmation })
 
-            if (status == 200) {
-                setResMessage("ثبت نام شما با موفقیت انجام شد. می توانید وارد شوید")
-                setCheckEmailRes(true)
+        if (validator.success) {
+            setErrors({})
+            var formData = new FormData();
+            formData.append('email', email);
+            formData.append('password', password);
+            formData.append('password_confirmation', passwordConfirmation);
+
+            try {
+                const { data, status } = await register(formData)
+
+                if (status == 200) {
+                    setResMessage("ثبت نام شما با موفقیت انجام شد. می توانید وارد شوید")
+                    setCheckEmailRes(true)
+                }
+
+            } catch (error) {
+                console.log(error);
             }
-
-        } catch (error) {
-            console.log(error);
+        } else {
+            setErrors(validator.errors)
         }
         setLoading(false)
 
@@ -80,20 +99,28 @@ export default function LoginPage() {
         if (loading) return;
 
         setLoading(true)
-        var formData = new FormData();
-        formData.append('email', email);
-        formData.append('password', password);
 
-        try {
-            const { data, status } = await login(formData)
+        const validator = passwordValidator({ password })
 
-            if (status == 200) {
-                loginUser(data.token)
-                router.push("/")
+        if (validator.success) {
+            setErrors({})
+            var formData = new FormData();
+            formData.append('email', email);
+            formData.append('password', password);
+
+            try {
+                const { data, status } = await login(formData)
+
+                if (status == 200) {
+                    loginUser(data.token)
+                    router.push("/")
+                }
+
+            } catch (error) {
+                console.log(error);
             }
-
-        } catch (error) {
-            console.log(error);
+        } else {
+            setErrors(validator.errors)
         }
         setLoading(false)
 
@@ -103,18 +130,25 @@ export default function LoginPage() {
         if (loading) return;
 
         setLoading(true)
-        const form = new FormData();
-        form.append("email", email);
-        form.append("verification_code", vcode);
+        const validator = vcodeValidator({ verification_code: vcode })
 
-        try {
-            const { data, status } = await checkVCode(form)
-            if (status == 200) {
-                setResMessage("برای تکمیل ثبت نام خود، کلمه عبور را تعیین کنید")
-                setVCodeRes(true)
+        if (validator.success) {
+            setErrors({})
+            const form = new FormData();
+            form.append("email", email);
+            form.append("verification_code", vcode);
+
+            try {
+                const { data, status } = await checkVCode(form)
+                if (status == 200) {
+                    setResMessage("برای تکمیل ثبت نام خود، کلمه عبور را تعیین کنید")
+                    setVCodeRes(true)
+                }
+            } catch (error) {
+
             }
-        } catch (error) {
-
+        } else {
+            setErrors(validator.errors)
         }
         setLoading(false)
 
@@ -127,18 +161,18 @@ export default function LoginPage() {
                 {checkEmailRes === "" ? (
                     <div className="flex flex-col gap-y-2">
                         <ResultMessage message={resMessage} />
-                        <LoginForm loading={loading} email={email} setEmail={setEmail} handleCheckEmail={handleCheckEmail} />
+                        <LoginForm loading={loading} errors={errors} email={email} setEmail={setEmail} handleCheckEmail={handleCheckEmail} />
                     </div>
                 ) : (
                     !vcodeRes ? (
                         <div className="flex flex-col gap-y-2">
                             <ResultMessage message={resMessage} />
-                            <VerificationCodeForm loading={loading} handleCheckVCode={handleCheckVCode} />
+                            <VerificationCodeForm loading={loading} errors={errors} handleCheckVCode={handleCheckVCode} />
                         </div>
                     ) : (
                         <div className="flex flex-col gap-y-2">
                             <ResultMessage message={resMessage} />
-                            <PasswordForm loading={loading} handleSubmit={handleSubmit} password={password} setPassword={setPassword} passwordConfirmation={passwordConfirmation} setPasswordConfirmation={setPasswordConfirmation} checkEmailRes={checkEmailRes} />
+                            <PasswordForm loading={loading} errors={errors} handleSubmit={handleSubmit} password={password} setPassword={setPassword} passwordConfirmation={passwordConfirmation} setPasswordConfirmation={setPasswordConfirmation} checkEmailRes={checkEmailRes} />
                         </div>
                     )
                 )}

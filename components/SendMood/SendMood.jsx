@@ -3,7 +3,7 @@ import { useContext } from "react";
 import HomeContext from "../Context/HomeContext";
 import MoodEmojies from "./MoodEmojies";
 
-const SendMood = ({ handleSendMood }) => {
+const SendMood = ({ errors, handleSendMood }) => {
 
     const { mood, setMood, moodEmoji, setMoodEmoji, charLeft, setCharLeft, charLeftStatus, setCharLeftStatus, moodLimit } = useContext(HomeContext)
 
@@ -57,6 +57,7 @@ const SendMood = ({ handleSendMood }) => {
               lg:placeholder:text-xs
               focus:text-gray-700 focus:bg-white focus:border-amber-300 focus:outline-none
             " id="mood" rows="3" placeholder="توی چند کلمه یا جمله بنویس الان چه حسی داری ..." value={mood} onChange={event => handleMoodChange(event.target.value)} />
+            {errors.mood && (<span className="text-xxs text-red-500 mt-2">{errors.mood}</span>)}
 
             <div className="flex justify-between mt-2 items-center">
                 <span className={`text-xxs ${charLeftStatus !== "" ? `text-${charLeftStatus}-400` : "text-slate-700"}`}>{charLeft}</span>

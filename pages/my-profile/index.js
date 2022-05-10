@@ -9,10 +9,11 @@ import Moods from "../../components/Moods/Moods";
 import UserProfile from "../../components/UserProfile/UserProfile";
 import UserSettingsWindow from "../../components/UserProfile/UserSettingsWindow";
 import { getUserProfileInfo, updateBio } from "../../Services/app/user/userService";
+import { bioValidator } from "../../Services/app/validators/userProfileValidator";
 import { SwalNotify } from "../../Services/lib/alerts";
 
 export default function MyProfilePage({ loggedUser, moods, followers, followings }) {
-
+    const [errors, setErrors] = useState({})
     const [user, setUser] = useState(loggedUser)
     const [bio, setBio] = useState(isEmpty(loggedUser.bio) ? "" : loggedUser.bio)
     const [userSettingsWindowVisibility, setUserSettingsVisibility] = useState(false)
@@ -23,12 +24,21 @@ export default function MyProfilePage({ loggedUser, moods, followers, followings
             bio, _method: "PUT"
         }
 
-        const res = await updateBio(newBio)
-        if (res) {
-            setUser({...loggedUser, bio})
-            setUserSettingsVisibility(false)
-            SwalNotify("بروزرسانی پروفایل", "پروفایل کاربری شما با موفقیت بروزرسانی شد", "success")
+        const validator = bioValidator(newBio)
+
+        if (validator.success) {
+            setErrors({})
+            const res = await updateBio(newBio)
+            if (res) {
+                setUser({ ...loggedUser, bio })
+                setUserSettingsVisibility(false)
+                SwalNotify("بروزرسانی پروفایل", "پروفایل کاربری شما با موفقیت بروزرسانی شد", "success")
+            }
+        } else {
+            setErrors(validator.errors)
         }
+
+
     }
 
     return (
@@ -45,7 +55,7 @@ export default function MyProfilePage({ loggedUser, moods, followers, followings
             >
                 {userSettingsWindowVisibility && (
                     <BlurBackgtuond setUserSettingsVisibility={setUserSettingsVisibility}>
-                        <UserSettingsWindow handleUpdateBio={handleUpdateBio} setUserSettingsVisibility={setUserSettingsVisibility} bio={bio} setBio={setBio} />
+                        <UserSettingsWindow errors={errors} handleUpdateBio={handleUpdateBio} setUserSettingsVisibility={setUserSettingsVisibility} bio={bio} setBio={setBio} />
                     </BlurBackgtuond>
                 )}
             </AnimatePresence>

@@ -5,11 +5,12 @@ import Moods from "../components/Moods/Moods";
 import SendMood from "../components/SendMood/SendMood";
 import { getMoods, storeMood } from "../Services/app/moods/moodsServices";
 import { isLoggedIn } from "../Services/app/user/userService";
+import { moodValidator } from "../Services/app/validators/moodValidator";
 
 const Home = ({ loggedUser, init_moods }) => {
 
   const [loading, setLoading] = useState(false)
-
+  const [errors, setErrors] = useState({})
   const refreshIn = 60000;
   const [user, setUser] = useState(loggedUser)
   const [moods, setMoods] = useState(init_moods)
@@ -40,21 +41,30 @@ const Home = ({ loggedUser, init_moods }) => {
     if (loading) return
     setLoading(true)
     let newMood = mood
-    let res = await storeMood(newMood)
-    setMood("")
-    setCharLeft(moodLimit)
-    setCharLeftStatus("0")
-    setMoodEmoji(1)
-    setMoods(prevState => ([
-      res, ...prevState
-    ]))
+
+    const validator = moodValidator(mood)
+    if (validator.success) {
+      setErrors({})
+      let res = await storeMood(newMood)
+      setMood("")
+      setCharLeft(moodLimit)
+      setCharLeftStatus("0")
+      setMoodEmoji(1)
+      setMoods(prevState => ([
+        res, ...prevState
+      ]))
+    } else {
+      setErrors(validator.errors)
+    }
+
+
     setLoading(false)
   }
 
   return (
     <HomeContext.Provider value={{ moods, setMoods, mood, setMood, moodEmoji, setMoodEmoji, user, setUser, charLeft, setCharLeft, charLeftStatus, setCharLeftStatus, moodLimit }}>
       <HomeLayout handleSendMood={handleSendMood} loggedUser={loggedUser}>
-        {user && (<SendMood handleSendMood={handleSendMood} />)}
+        {user && (<SendMood errors={errors} handleSendMood={handleSendMood} />)}
         <Moods moods={moods} />
       </HomeLayout>
     </HomeContext.Provider>

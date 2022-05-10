@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-const UserSettingsWindow = ({ handleUpdateBio, setUserSettingsVisibility, bio, setBio }) => {
+const UserSettingsWindow = ({ errors,handleUpdateBio, setUserSettingsVisibility, bio, setBio }) => {
 
     const dropIn = {
         hidden: {
@@ -42,6 +42,7 @@ const UserSettingsWindow = ({ handleUpdateBio, setUserSettingsVisibility, bio, s
                 <div className="flex flex-col gap-y-1 border p-2 rounded-lg">
                     <label className="text-gray-700 text-xs" htmlFor="bio">درباره شما</label>
                     <input type="bio" value={bio} onChange={(event) => setBio(event.target.value) } className="form-control block w-full px-3 py-2 text-base font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid rounded-lg transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-amber-400 focus:outline-none placeholder:text-xxs" placeholder="چند کلمه درمورد خودت ..." />
+                    {errors.bio && (<span className="text-xxs text-red-500 mt-2">{errors.bio}</span>)}
 
                 </div>
 
