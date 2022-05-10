@@ -61,7 +61,7 @@ const Mood = ({ mood }) => {
     const handleLikeBtn = async () => {
 
         if (!user) {
-            alert("login first you mother fucker")
+            SwalNotify("لایک", "برای لایک کردن باید وارد حساب کاربری خود بشوید و یا ثبت نام کنید", "warning")
             return
         }
 

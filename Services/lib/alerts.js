@@ -28,6 +28,7 @@ export const notify = (message, type) => {
 }
 export const SwalNotify = (title, message, type) => {
     const swalWithBootstrapButtons = Swal.mixin({
+        confirmButtonText: "باشه",
         customClass: {
             confirmButton: 'btn bg-emerald-400',
             cancelButton: 'btn bg-red-500'
@@ -69,7 +70,7 @@ export const confirm = (message, title, success, cancel = null, confirmBtn = "ح
             if (cancel) {
                 cancel()
             }
-            swalWithBootstrapButtons.fire(
+            SwalNotify(
                 'انصراف',
                 'درخواست شما لغو شد',
                 'error'
