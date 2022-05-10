@@ -1,7 +1,8 @@
 import { isEmpty } from 'lodash';
 import { useState, useRef } from 'react';
+import { BeatLoader } from 'react-spinners';
 
-const VerificationCodeForm = ({ handleCheckVCode }) => {
+const VerificationCodeForm = ({ loading, handleCheckVCode }) => {
 
     const [vcode1, setVCode1] = useState("")
     const [vcode2, setVCode2] = useState("")
@@ -21,7 +22,7 @@ const VerificationCodeForm = ({ handleCheckVCode }) => {
         console.log("change");
         let validNumbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
         if (!isEmpty(value) && !validNumbers.includes(value)) return;
-        
+
         switch (`${vcodeId}`) {
             case "1":
                 if (value === "") {
@@ -146,9 +147,9 @@ const VerificationCodeForm = ({ handleCheckVCode }) => {
     const onSubmit = (e) => {
         e.preventDefault()
         let vcode = `${vcode1}${vcode2}${vcode3}${vcode4}${vcode5}${vcode6}`
-        
+
         if (vcode.length !== 6) return
-        
+
         handleCheckVCode(vcode)
     }
 
@@ -163,7 +164,15 @@ const VerificationCodeForm = ({ handleCheckVCode }) => {
                 <input type="text" maxLength="1" ref={vcode5ref} value={vcode5} onKeyDown={event => handleOnInput(event, event.target.value, 5)} onChange={event => handleVCodeChande(5, event.target.value)} className="col-span-1 text-center form-control block w-full px-3 py-2 text-base font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid rounded-lg transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-amber-400 focus:outline-none" />
                 <input type="text" maxLength="1" ref={vcode6ref} value={vcode6} onKeyDown={event => handleOnInput(event, event.target.value, 6)} onChange={event => handleVCodeChande(6, event.target.value)} className="col-span-1 text-center form-control block w-full px-3 py-2 text-base font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid rounded-lg transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-amber-400 focus:outline-none" />
             </div>
-            <button className="btn bg-amber-300 text-slate-900 mt-2" type='submit'>تایید</button>
+
+            {loading ? (
+                <button className="btn bg-amber-300 text-slate-900 flex-center mt-2" type='submit'>
+                    <BeatLoader color={"#000"} loading={loading} size={5} />
+                </button>
+
+            ) : (
+                <button className="btn bg-amber-300 text-slate-900 mt-2" type='submit'>تایید</button>
+            )}
         </form>
     );
 }

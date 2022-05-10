@@ -1,4 +1,6 @@
-const PasswordForm = ({ checkEmailRes, password, setPassword, passwordConfirmation, setPasswordConfirmation, handleSubmit }) => {
+import { BeatLoader } from "react-spinners";
+
+const PasswordForm = ({ loading, checkEmailRes, password, setPassword, passwordConfirmation, setPasswordConfirmation, handleSubmit }) => {
 
 
     return (
@@ -14,8 +16,14 @@ const PasswordForm = ({ checkEmailRes, password, setPassword, passwordConfirmati
                     </span>
                 )
             }
+            {loading ? (
+                <button className="btn bg-amber-300 text-slate-900 flex-center mt-2">
+                    <BeatLoader color={"#000"} loading={loading} size={5} />
+                </button>
 
-            <button className="btn bg-amber-300 text-slate-900 mt-2">{checkEmailRes ? "ورود" : "ثبت نام و ورود"}</button>
+            ) : (
+                <button className="btn bg-amber-300 text-slate-900 mt-2">{checkEmailRes ? "ورود" : "ثبت نام و ورود"}</button>
+            )}
         </form>
     );
 }

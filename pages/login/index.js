@@ -11,6 +11,8 @@ import { isLoggedIn, loginUser } from "../../Services/app/user/userService";
 
 export default function LoginPage() {
 
+    const [loading, setLoading] = useState(false)
+
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirmation, setPasswordConfirmation] = useState("")
@@ -25,6 +27,10 @@ export default function LoginPage() {
     const handleCheckEmail = async (e) => {
         e.preventDefault();
 
+        if (loading) return;
+
+        setLoading(true)
+
         var formData = new FormData();
         formData.append('email', email);
 
@@ -36,6 +42,8 @@ export default function LoginPage() {
         } catch (error) {
             console.log(error);
         }
+
+        setLoading(false)
     }
 
     const handleSubmit = e => {
@@ -45,6 +53,9 @@ export default function LoginPage() {
 
     const handleRegister = async () => {
 
+        if (loading) return;
+
+        setLoading(true)
         var formData = new FormData();
         formData.append('email', email);
         formData.append('password', password);
@@ -61,11 +72,14 @@ export default function LoginPage() {
         } catch (error) {
             console.log(error);
         }
+        setLoading(false)
 
     }
 
     const handleLogin = async () => {
+        if (loading) return;
 
+        setLoading(true)
         var formData = new FormData();
         formData.append('email', email);
         formData.append('password', password);
@@ -81,11 +95,14 @@ export default function LoginPage() {
         } catch (error) {
             console.log(error);
         }
+        setLoading(false)
 
     }
 
     const handleCheckVCode = async (vcode) => {
+        if (loading) return;
 
+        setLoading(true)
         const form = new FormData();
         form.append("email", email);
         form.append("verification_code", vcode);
@@ -99,6 +116,7 @@ export default function LoginPage() {
         } catch (error) {
 
         }
+        setLoading(false)
 
     }
 
@@ -109,18 +127,18 @@ export default function LoginPage() {
                 {checkEmailRes === "" ? (
                     <div className="flex flex-col gap-y-2">
                         <ResultMessage message={resMessage} />
-                        <LoginForm email={email} setEmail={setEmail} handleCheckEmail={handleCheckEmail} />
+                        <LoginForm loading={loading} email={email} setEmail={setEmail} handleCheckEmail={handleCheckEmail} />
                     </div>
                 ) : (
                     !vcodeRes ? (
                         <div className="flex flex-col gap-y-2">
                             <ResultMessage message={resMessage} />
-                            <VerificationCodeForm handleCheckVCode={handleCheckVCode} />
+                            <VerificationCodeForm loading={loading} handleCheckVCode={handleCheckVCode} />
                         </div>
                     ) : (
                         <div className="flex flex-col gap-y-2">
                             <ResultMessage message={resMessage} />
-                            <PasswordForm handleSubmit={handleSubmit} password={password} setPassword={setPassword} passwordConfirmation={passwordConfirmation} setPasswordConfirmation={setPasswordConfirmation} checkEmailRes={checkEmailRes} />
+                            <PasswordForm loading={loading} handleSubmit={handleSubmit} password={password} setPassword={setPassword} passwordConfirmation={passwordConfirmation} setPasswordConfirmation={setPasswordConfirmation} checkEmailRes={checkEmailRes} />
                         </div>
                     )
                 )}

@@ -8,13 +8,15 @@ import { isLoggedIn } from "../Services/app/user/userService";
 
 const Home = ({ loggedUser, init_moods }) => {
 
+  const [loading, setLoading] = useState(false)
+
   const refreshIn = 60000;
   const [user, setUser] = useState(loggedUser)
   const [moods, setMoods] = useState(init_moods)
 
   const [mood, setMood] = useState("")
   const [moodEmoji, setMoodEmoji] = useState(1)
-  
+
   const moodLimit = 700;
   const [charLeft, setCharLeft] = useState(moodLimit)
   const [charLeftStatus, setCharLeftStatus] = useState("")
@@ -35,7 +37,8 @@ const Home = ({ loggedUser, init_moods }) => {
   }
 
   const handleSendMood = async (mood) => {
-
+    if (loading) return
+    setLoading(true)
     let newMood = mood
     let res = await storeMood(newMood)
     setMood("")
@@ -45,7 +48,7 @@ const Home = ({ loggedUser, init_moods }) => {
     setMoods(prevState => ([
       res, ...prevState
     ]))
-
+    setLoading(false)
   }
 
   return (

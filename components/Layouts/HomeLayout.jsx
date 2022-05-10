@@ -26,7 +26,7 @@ const HomeLayout = ({ children }) => {
             setUser(false)
         }
     }
-    console.log(user);
+
 
     return (
         <Fragment>
