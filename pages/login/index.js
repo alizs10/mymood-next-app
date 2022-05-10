@@ -9,6 +9,7 @@ import VerificationCodeForm from "../../components/Auth/VerificationCodeForm";
 import { checkEmail, checkVCode, login, register } from "../../Services/app/auth/authServices";
 import { isLoggedIn, loginUser } from "../../Services/app/user/userService";
 import { emailValidator, passwordValidator, passwordWithConfirmationValidator, vcodeValidator } from "../../Services/app/validators/authValidator";
+import { notify } from "../../Services/lib/alerts";
 
 export default function LoginPage() {
 
@@ -45,8 +46,9 @@ export default function LoginPage() {
                 setCheckEmailRes(data.status)
                 if (data.status) setVCodeRes(true)
                 data.status ? setResMessage("برای ورود به حساب کاربری خود، کلمه عبور را وارد کنید") : setResMessage("کد تایید به ایمیل شما ارسال شد")
-            } catch (error) {
-                console.log(error);
+            } catch (e) {
+                let error = Object.assign(e);
+                notify("خطای سرور دوباره امتحان کنید", "warning")
             }
         } else {
             setErrors(validator.errors)
@@ -112,17 +114,24 @@ export default function LoginPage() {
                 const { data, status } = await login(formData)
 
                 if (status == 200) {
+                    setResMessage("در حال ورود ...")
                     loginUser(data.token)
                     router.push("/")
                 }
 
-            } catch (error) {
-                console.log(error);
+            } catch (e) {
+                let error = Object.assign(e);
+                setLoading(false)
+                if (error.response.status == 401) {
+                    setResMessage("کلمه عبور صحیح نمی باشد!")
+                } else {
+                    notify("خطای سرور دوباره امتحان کنید", "warning")
+                }
             }
         } else {
             setErrors(validator.errors)
+            setLoading(false)
         }
-        setLoading(false)
 
     }
 
@@ -144,8 +153,14 @@ export default function LoginPage() {
                     setResMessage("برای تکمیل ثبت نام خود، کلمه عبور را تعیین کنید")
                     setVCodeRes(true)
                 }
-            } catch (error) {
+            } catch (e) {
+                let error = Object.assign(e);
 
+                if (error.response.status == 422) {
+                    setResMessage("کد تایید صحیح نمی باشد!")
+                } else {
+                    notify("خطای سرور دوباره امتحان کنید", "warning")
+                }
             }
         } else {
             setErrors(validator.errors)
@@ -154,9 +169,19 @@ export default function LoginPage() {
 
     }
 
+    const handleBack = () => {
+        if (checkEmailRes === "") {
+            router.push("/")
+        } else {
+            setCheckEmailRes("")
+            setResMessage("")
+            setVCodeRes(false)
+        }
+    }
+
 
     return (
-        <AuthLayout>
+        <AuthLayout handleBack={handleBack}>
             <AnimatePresence>
                 {checkEmailRes === "" ? (
                     <div className="flex flex-col gap-y-2">
