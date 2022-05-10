@@ -42,7 +42,7 @@ export const likeMood = async (mood_id) => {
         let error = Object.assign(e)
 
         console.log(error);
-        
+
     }
 }
 export const unlikeMood = async (mood_id) => {
@@ -56,7 +56,7 @@ export const unlikeMood = async (mood_id) => {
         let error = Object.assign(e)
 
         console.log(error);
-        
+
     }
 }
 export const deleteMood = async (mood_id) => {
@@ -70,6 +70,20 @@ export const deleteMood = async (mood_id) => {
         let error = Object.assign(e)
 
         console.log(error);
-        
+
+    }
+}
+export const reportMood = async (mood_id) => {
+    try {
+        const { status } = await http.get(`${config['base_url']}/api/report/${mood_id}`);
+
+        if (status == 200) {
+            return true
+        }
+    } catch (e) {
+        let error = Object.assign(e)
+
+        console.log(error);
+
     }
 }

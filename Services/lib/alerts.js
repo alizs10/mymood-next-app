@@ -41,7 +41,7 @@ export const SwalNotify = (title, message, type) => {
     )
 }
 
-export const confirm = (message, title, success, cancel = null) => {
+export const confirm = (message, title, success, cancel = null, confirmBtn = "حذف") => {
 
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -56,7 +56,7 @@ export const confirm = (message, title, success, cancel = null) => {
         text: message,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'حذف',
+        confirmButtonText: confirmBtn,
         cancelButtonText: 'انصراف',
         reverseButtons: true
     }).then((result) => {

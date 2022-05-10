@@ -4,7 +4,7 @@ import moment from 'jalali-moment'
 import { useEffect } from "react";
 import { useContext } from "react";
 import HomeContext from "../Context/HomeContext";
-import { deleteMood, likeMood, unlikeMood } from "../../Services/app/moods/moodsServices";
+import { deleteMood, likeMood, reportMood, unlikeMood } from "../../Services/app/moods/moodsServices";
 import { confirm, SwalNotify } from "../../Services/lib/alerts";
 import Link from 'next/link';
 
@@ -112,6 +112,22 @@ const Mood = ({ mood }) => {
             })
     }
 
+    const handleReportMood = mood_id => {
+
+        confirm("گزارش مود",
+            "آیا از گزارش خود اطمینان دارید؟",
+            async () => {
+                const res = await reportMood(mood_id)
+
+                if (res) {
+                    SwalNotify("گزارش", "گزارش شما با موفقیت ثبت شد و بررسی خواهد شد. از همکاری شما متشکریم", "success")
+                }
+            }, null, "گزارش")
+
+
+
+    }
+
 
     return (
         <div className="mood">
@@ -157,7 +173,7 @@ const Mood = ({ mood }) => {
                                 </span>
                             </button>
                         ) : (
-                            <button className="text-sm flex-center">
+                            <button className="text-sm flex-center" onClick={() => handleReportMood(mood.id)}>
 
                                 <span key={1}>
                                     <i className="fa-light fa-brake-warning"></i>
