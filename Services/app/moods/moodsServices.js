@@ -1,13 +1,13 @@
 import http from "../../http";
 import config from "../../config.json";
 
-export const getMoods = async () => {
+export const getMoods = async (page = 1, lastID = "") => {
 
     try {
-        const { data, status } = await http.get(`${config['base_url']}/api/moods`);
+        const { data, status } = await http.get(`${config['base_url']}/api/moods?page=${page}&last_id=${lastID}`);
 
         if (status == 200) {
-            return data.moods
+            return data.paginate
         }
     } catch (e) {
         let error = Object.assign(e)

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import HomeContext from "../components/Context/HomeContext";
 import HomeLayout from "../components/Layouts/HomeLayout";
 import Moods from "../components/Moods/Moods";
@@ -7,10 +7,12 @@ import { getMoods, storeMood } from "../Services/app/moods/moodsServices";
 import { isLoggedIn } from "../Services/app/user/userService";
 import { moodValidator } from "../Services/app/validators/moodValidator";
 
-const Home = ({ loggedUser, init_moods }) => {
+const Home = ({ loggedUser, init_moods, lastID }) => {
 
   const [loading, setLoading] = useState(false)
+  const [loadingMore, setLoadingMore] = useState(false)
   const [errors, setErrors] = useState({})
+
   const refreshIn = 60000;
   const [user, setUser] = useState(loggedUser)
   const [moods, setMoods] = useState(init_moods)
@@ -22,14 +24,71 @@ const Home = ({ loggedUser, init_moods }) => {
   const [charLeft, setCharLeft] = useState(moodLimit)
   const [charLeftStatus, setCharLeftStatus] = useState("")
 
+  const [loadMore, setLoadMore] = useState(false)
+  const [lastId, setLastId] = useState(lastID)
+  const moodsRef = useRef()
+
+  // useEffect(() => {
+
+  //   const interval = setInterval(() => {
+  //     handleRefreshData()
+  //   }, refreshIn);
+
+  //   return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  // }, [])
   useEffect(() => {
 
-    const interval = setInterval(() => {
-      handleRefreshData()
-    }, refreshIn);
+    document.addEventListener('scroll', trackScrolling);
 
-    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+    return () => {
+      document.removeEventListener('scroll', trackScrolling);
+    };
   }, [])
+
+  useEffect(() => {
+
+    let unmounted = false
+    if (!unmounted) {
+      if (loadMore) {
+        loadMoreMoods();
+      }
+    }
+
+
+    return () => unmounted = true;
+
+  }, [loadMore])
+
+  const loadMoreMoods = async () => {
+    const paginate = await getMoods(1, lastId)
+    let loadedMoods = paginate.data;
+
+    setLastId(paginate.last_id)
+    setLoadingMore(false)
+    setLoadMore(false)
+    setMoods([...moods, ...loadedMoods])
+
+
+    if (paginate.last_id !== "") {
+      document.addEventListener('scroll', trackScrolling);
+    }
+
+
+
+  }
+
+  const isBottom = (el) => {
+    return el.getBoundingClientRect().bottom <= window.innerHeight;
+  }
+
+  const trackScrolling = () => {
+    const wrappedElement = moodsRef.current;
+    if (isBottom(wrappedElement)) {
+      setLoadingMore(true)
+      setLoadMore(true)
+      document.removeEventListener('scroll', trackScrolling);
+    }
+  };
 
   const handleRefreshData = async () => {
     let moods = await getMoods()
@@ -65,7 +124,8 @@ const Home = ({ loggedUser, init_moods }) => {
     <HomeContext.Provider value={{ moods, setMoods, mood, setMood, moodEmoji, setMoodEmoji, user, setUser, charLeft, setCharLeft, charLeftStatus, setCharLeftStatus, moodLimit }}>
       <HomeLayout handleSendMood={handleSendMood} loggedUser={loggedUser}>
         {user && (<SendMood errors={errors} handleSendMood={handleSendMood} />)}
-        <Moods moods={moods} />
+        <Moods loadingMore={loadingMore} moodsRef={moodsRef} moods={moods} />
+        
       </HomeLayout>
     </HomeContext.Provider>
 
@@ -75,11 +135,13 @@ const Home = ({ loggedUser, init_moods }) => {
 export async function getServerSideProps({ req }) {
 
   const loggedUser = await isLoggedIn(req.headers.cookie)
-  const init_moods = await getMoods()
+  const paginate = await getMoods()
 
   return {
     props: {
-      loggedUser, init_moods
+      loggedUser,
+      init_moods: paginate.data,
+      lastID: paginate.last_id
     },
   }
 }

@@ -1,10 +1,11 @@
 import { isNull } from "lodash";
+import { FadeLoader } from "react-spinners";
 import Mood from "./Mood";
 
-const Moods = ({moods, pageType = null}) => {
+const Moods = ({ loadingMore, moodsRef, moods, pageType = null }) => {
 
     return (
-        <section className="flex flex-col gap-y-4 mx-2 pb-4">
+        <section ref={moodsRef} className="flex flex-col gap-y-4 mx-2 pb-4">
 
             <div className="flex justify-between items-center">
                 <span className="text-xs text-slate-700">حال کاربرای مای مود چطوره</span>
@@ -48,15 +49,21 @@ const Moods = ({moods, pageType = null}) => {
                     <Mood key={mood.id} mood={mood} />
                 ))}
 
-                {(moods.length === 0  && isNull(pageType)) && (
+                {(moods.length === 0 && isNull(pageType)) && (
                     <span className="text-xs">در به اشتراک گذاشتن مود خود اولین نفر باشید :)</span>
                 )}
 
-                {(moods.length === 0  && pageType === 0) && (
+                {(moods.length === 0 && pageType === 0) && (
                     <span className="text-xs">هنوز مودی به اشتراک نذاشتی ...</span>
                 )}
 
             </div>
+
+            {loadingMore && (
+                <span className="self-center">
+                    <FadeLoader color={"#334155"} loading={loadingMore} />
+                </span>
+            )}
 
 
         </section>
