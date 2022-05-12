@@ -2,7 +2,14 @@ import { isNull } from "lodash";
 import { FadeLoader } from "react-spinners";
 import Mood from "./Mood";
 
-const Moods = ({ loadingMore, moodsRef, moods, pageType = null }) => {
+const Moods = ({ getFilteredMoods, filter, setFilter, loadingMore, moodsRef, moods, pageType = null }) => {
+
+
+    const handleChange = val => {
+        console.log(val);
+        setFilter(val)
+        getFilteredMoods(val)
+    }
 
     return (
         <section ref={moodsRef} className="flex flex-col gap-y-4 mx-2 pb-4">
@@ -30,11 +37,13 @@ const Moods = ({ loadingMore, moodsRef, moods, pageType = null }) => {
                         ease-in-out
                         m-0
                         focus:text-gray-700 focus:bg-white focus:border-amber-400 focus:outline-none"
-                                aria-label="Default select example">
+                                aria-label="Default select example"
+                                value={filter.toString()} onChange={event => handleChange(event.target.value)}
+                            >
 
-                                <option value="1">جدیدترین</option>
-                                <option value="1">دنبال کنندگان</option>
-                                <option value="2">مودترین</option>
+                                <option value={0}>جدیدترین</option>
+                                <option value={1}>مودترین</option>
+                                <option value={2}>دنبال کنندگان</option>
 
                             </select>
                         </div>

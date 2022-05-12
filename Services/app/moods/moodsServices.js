@@ -1,10 +1,10 @@
 import http from "../../http";
 import config from "../../config.json";
 
-export const getMoods = async (page = 1, lastID = "") => {
-
+export const getMoods = async (page = 1, lastID = "", followers = false, orderBy = "") => {
+console.log("hap");
     try {
-        const { data, status } = await http.get(`${config['base_url']}/api/moods?page=${page}&last_id=${lastID}`);
+        const { data, status } = await http.get(`${config['base_url']}/api/moods?page=${page}&last_id=${lastID}&followers=${followers}&order_by=${orderBy}`);
 
         if (status == 200) {
             return data.paginate

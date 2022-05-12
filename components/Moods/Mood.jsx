@@ -30,7 +30,6 @@ const Mood = ({ mood }) => {
     useEffect(() => {
         let unmounted = false;
         if (!unmounted) {
-            console.log("now");
             checkUserLiked()
 
         }
