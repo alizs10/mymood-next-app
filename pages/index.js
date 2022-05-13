@@ -143,9 +143,14 @@ const Home = ({ loggedUser, init_moods, lastID }) => {
       setCharLeft(moodLimit)
       setCharLeftStatus("0")
       setMoodEmoji(1)
-      setMoods(prevState => ([
-        res, ...prevState
-      ]))
+      if (filter != 0) {
+        setFilter("0")
+        await getFilteredMoods("0")
+      } else {
+        setMoods(prevState => ([
+          res, ...prevState
+        ]))
+      }
     } else {
       setErrors(validator.errors)
     }
