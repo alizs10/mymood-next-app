@@ -2,6 +2,7 @@ import { useState } from "react";
 import HomeContext from "../../components/Context/HomeContext";
 import HomeLayout from "../../components/Layouts/HomeLayout";
 import Moods from "../../components/Moods/Moods";
+import MoodsComponentWithContext from "../../components/Moods/MoodsComponntWithContext";
 import UserProfile from "../../components/UserProfile/UserProfile";
 import { follow, getUserInfos, unfollow } from "../../Services/app/user/userService";
 import { SwalNotify } from "../../Services/lib/alerts";
@@ -37,12 +38,14 @@ export default function UserProfilePage(props) {
     }
 
     return (
-        <HomeContext.Provider value={{ user, setUser }}>
-            <HomeLayout>
-                <UserProfile pageType="1" moodLength={props.moods.length} user={props.user} followers={followers} followings={props.followings} isFollowed={followStatus} handleFollowUser={handleFollowUser} handleUnFollowUser={handleUnFollowUser} />
-                <Moods moods={props.moods} />
-            </HomeLayout>
-        </HomeContext.Provider>
+        <MoodsComponentWithContext init_moods={props.moods}>
+            <HomeContext.Provider value={{ user, setUser }}>
+                <HomeLayout>
+                    <UserProfile pageType="1" moodLength={props.moods.length} user={props.user} followers={followers} followings={props.followings} isFollowed={followStatus} handleFollowUser={handleFollowUser} handleUnFollowUser={handleUnFollowUser} />
+                    <Moods />
+                </HomeLayout>
+            </HomeContext.Provider>
+        </MoodsComponentWithContext>
 
     )
 }

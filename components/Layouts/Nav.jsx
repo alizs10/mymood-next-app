@@ -11,20 +11,20 @@ const Nav = ({ user }) => {
                 </span>
             </Link>
             {user && (
-                <Link href="my-profile">
+                <Link href="/my-profile">
                     <span className="col-span-1 btn flex-center hover:bg-slate-200 hover-transition text-xs cursor-pointer flex flex-col gap-2">
                         <i className="fa-light fa-user text-2xl"></i>
                         <span>پروفایل من</span>
                     </span>
                 </Link>
             )}
-            <Link href="users/stats">
+            <Link href="/users/stats">
                 <span className="col-span-1 btn flex-center hover:bg-slate-200 hover-transition text-xs cursor-pointer flex flex-col gap-2">
                     <i className="fa-light fa-chart-mixed text-2xl"></i>
                     <span>آمار کاربران</span>
                 </span>
             </Link>
-            <Link href="about">
+            <Link href="/about">
                 <span className="col-span-1 btn flex-center hover:bg-slate-200 hover-transition text-xs cursor-pointer flex flex-col gap-2">
                     <i className="fa-light fa-info text-2xl"></i>
                     <span>درباره مای مود</span>

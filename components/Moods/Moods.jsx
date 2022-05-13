@@ -1,6 +1,6 @@
 import { isNull } from "lodash";
 import { FadeLoader } from "react-spinners";
-import { useContext ,useEffect} from "react";
+import { useContext } from "react";
 import { MoodsContext } from "../Context/MoodsContext";
 import Mood from "./Mood";
 

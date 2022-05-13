@@ -3,7 +3,6 @@ import { AnimatePresence } from "framer-motion";
 import { isEmpty } from "lodash";
 import { useState } from "react";
 import HomeContext from "../../components/Context/HomeContext";
-import BlurBackgtuond from "../../components/Layouts/BlurBackground";
 import HomeLayout from "../../components/Layouts/HomeLayout";
 import Moods from "../../components/Moods/Moods";
 import UserProfile from "../../components/UserProfile/UserProfile";
@@ -11,6 +10,8 @@ import UserSettingsWindow from "../../components/UserProfile/UserSettingsWindow"
 import { getUserProfileInfo, updateBio } from "../../Services/app/user/userService";
 import { bioValidator } from "../../Services/app/validators/userProfileValidator";
 import { SwalNotify } from "../../Services/lib/alerts";
+import BlurBackground from '../../components/Layouts/BlurBackground';
+import MoodsComponentWithContext from "../../components/Moods/MoodsComponntWithContext";
 
 export default function MyProfilePage({ loggedUser, moods, followers, followings }) {
     const [errors, setErrors] = useState({})
@@ -42,25 +43,27 @@ export default function MyProfilePage({ loggedUser, moods, followers, followings
     }
 
     return (
-        <HomeContext.Provider value={{ user, setUser }}>
-            <HomeLayout>
-                <UserProfile pageType="0" user={user} followers={followers} followings={followings} moodLength={moods.length} setUserSettingsVisibility={setUserSettingsVisibility} />
-                <Moods moods={moods} pageType={0} />
-            </HomeLayout>
+        <MoodsComponentWithContext init_moods={moods}>
+            <HomeContext.Provider value={{ user, setUser }}>
+                <HomeLayout>
+                    <UserProfile pageType="0" user={user} followers={followers} followings={followings} moodLength={moods.length} setUserSettingsVisibility={setUserSettingsVisibility} />
+                    <Moods pageType={0} />
+                </HomeLayout>
 
-            <AnimatePresence
-                initial={false}
-                exitBeforeEnter={true}
-                onExitComplete={() => null}
-            >
-                {userSettingsWindowVisibility && (
-                    <BlurBackgtuond setUserSettingsVisibility={setUserSettingsVisibility}>
-                        <UserSettingsWindow errors={errors} handleUpdateBio={handleUpdateBio} setUserSettingsVisibility={setUserSettingsVisibility} bio={bio} setBio={setBio} />
-                    </BlurBackgtuond>
-                )}
-            </AnimatePresence>
+                <AnimatePresence
+                    initial={false}
+                    exitBeforeEnter={true}
+                    onExitComplete={() => null}
+                >
+                    {userSettingsWindowVisibility && (
+                        <BlurBackground setUserSettingsVisibility={setUserSettingsVisibility}>
+                            <UserSettingsWindow errors={errors} handleUpdateBio={handleUpdateBio} setUserSettingsVisibility={setUserSettingsVisibility} bio={bio} setBio={setBio} />
+                        </BlurBackground>
+                    )}
+                </AnimatePresence>
 
-        </HomeContext.Provider>
+            </HomeContext.Provider>
+        </MoodsComponentWithContext>
 
     )
 }

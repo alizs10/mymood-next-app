@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-const BlurBackgtuond = ({ setUserSettingsVisibility, children }) => {
+const BlurBackground = ({ setUserSettingsVisibility, children }) => {
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -15,4 +15,4 @@ const BlurBackgtuond = ({ setUserSettingsVisibility, children }) => {
     );
 }
 
-export default BlurBackgtuond;
+export default BlurBackground;
