@@ -41,3 +41,11 @@ export const getUser = async (token) => {
 export const logout = async () => {
     return await http.get(`${config["base_url"]}/api/logout`)
 }
+
+export const loginWithGoogle = async () => {
+    return await http.get(`${config["base_url"]}/api/auth/google`)
+}
+
+export const googleCallback = async (query) => {
+    return await http.get(`${config["base_url"]}/api/auth/google/callback?code=${query.code}&scope=${query.scope}&authuser=${query.authuser}$propmpt=${query.propmpt}`)
+}

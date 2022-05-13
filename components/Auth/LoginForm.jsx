@@ -1,14 +1,28 @@
+
+import { useRouter } from "next/router";
 import { Fragment } from "react";
 import { BeatLoader } from "react-spinners";
+import { loginWithGoogle } from "../../Services/app/auth/authServices";
 
 
 const LoginForm = ({ errors, loading, email, setEmail, handleCheckEmail }) => {
 
     const googleLogo = require("./google.svg")
+    const router = useRouter();
+
+    const handleLoginWithGoogle = async () => {
+        const res = await loginWithGoogle()
+        if(res)
+        {
+            router.push(res.data)
+        }
+
+        console.log(res);
+    }
 
     return (
         <Fragment>
-            <button href=""
+            <button onClick={() => handleLoginWithGoogle()}
                 className="btn mt-4 bg-white w-3/4 lg:w-2/5 border-2 self-center flex justify-between items-center">
                 <span className="text-xs lg:text-sm">ورود با گوگل</span>
                 <img src={googleLogo.default.src} className="w-6" alt="google logo" />
