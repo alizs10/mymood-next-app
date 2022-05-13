@@ -3,17 +3,17 @@ import { FadeLoader } from "react-spinners";
 import { useContext } from "react";
 import { MoodsContext } from "../Context/MoodsContext";
 import Mood from "./Mood";
+import HomeContext from "../Context/HomeContext";
 
-const Moods = ({ user, pageType = null }) => {
+const Moods = ({ pageType = null }) => {
 
     const { moods, filter, setFilter, moodsRef, getFilteredMoods, loadingMore } = useContext(MoodsContext)
-
+    const { user } = useContext(HomeContext)
     const handleChange = val => {
         setFilter(val)
         getFilteredMoods(val)
     }
 
-    
 
     return (
         <section ref={moodsRef} className="flex flex-col gap-y-4 mx-2 pb-4">

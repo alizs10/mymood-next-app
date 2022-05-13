@@ -5,17 +5,13 @@ import HomeLayout from "../components/Layouts/HomeLayout";
 import Moods from "../components/Moods/Moods";
 import MoodsComponentWithContext from "../components/Moods/MoodsComponntWithContext";
 import SendMood from "../components/SendMood/SendMood";
-import { getMoods, storeMood } from "../Services/app/moods/moodsServices";
+import { getMoods } from "../Services/app/moods/moodsServices";
 import { isLoggedIn } from "../Services/app/user/userService";
-import { moodValidator } from "../Services/app/validators/moodValidator";
 
 const Home = ({ loggedUser, init_moods, lastID }) => {
 
-  const { loadingMore, setLoadingMore, moods, setMoods, lastId, setLastId, moodestPage, setMoodestPage, filter, setFilter, moodsRef, getFilteredMoods, loadMoreMoods, trackScrolling } = useContext(MoodsContext);
+  const { loadingMore, filter, loadMoreMoods, trackScrolling } = useContext(MoodsContext);
 
-
-  const [loading, setLoading] = useState(false)
-  const [errors, setErrors] = useState({})
 
   const [user, setUser] = useState(loggedUser)
 
@@ -40,40 +36,13 @@ const Home = ({ loggedUser, init_moods, lastID }) => {
 
   }, [loadingMore])
 
-  const handleSendMood = async (mood) => {
-    if (loading) return
-    setLoading(true)
-    let newMood = mood
 
-    const validator = moodValidator(mood)
-    if (validator.success) {
-      setErrors({})
-      let res = await storeMood(newMood)
-      setMood("")
-      setCharLeft(moodLimit)
-      setCharLeftStatus("0")
-      setMoodEmoji(1)
-      if (filter != 0) {
-        setFilter("0")
-        await getFilteredMoods("0")
-      } else {
-        setMoods(prevState => ([
-          res, ...prevState
-        ]))
-      }
-    } else {
-      setErrors(validator.errors)
-    }
-
-
-    setLoading(false)
-  }
   return (
     <MoodsComponentWithContext init_moods={init_moods} lastID={lastID}>
       <HomeContext.Provider value={{ mood, setMood, moodEmoji, setMoodEmoji, user, setUser, charLeft, setCharLeft, charLeftStatus, setCharLeftStatus, moodLimit }}>
-        <HomeLayout handleSendMood={handleSendMood} loggedUser={loggedUser}>
-          {user && (<SendMood errors={errors} handleSendMood={handleSendMood} />)}
-          <Moods init_moods={init_moods}/>
+        <HomeLayout>
+          {user && (<SendMood />)}
+          <Moods init_moods={init_moods} />
         </HomeLayout>
       </HomeContext.Provider>
     </MoodsComponentWithContext>

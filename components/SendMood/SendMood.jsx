@@ -1,12 +1,18 @@
-import { useState } from "react";
-import { useContext } from "react";
+import { useState,useContext } from "react";
 import HomeContext from "../Context/HomeContext";
+import { MoodsContext } from "../Context/MoodsContext";
 import MoodEmojies from "./MoodEmojies";
+import { moodValidator } from "../../Services/app/validators/moodValidator";
+import { storeMood } from "../../Services/app/moods/moodsServices";
+const SendMood = () => {
+ 
+    const { moods, setMoods, filter } = useContext(MoodsContext);
 
-const SendMood = ({ errors, handleSendMood }) => {
 
     const { mood, setMood, moodEmoji, setMoodEmoji, charLeft, setCharLeft, charLeftStatus, setCharLeftStatus, moodLimit } = useContext(HomeContext)
-
+    
+    const [loading, setLoading] = useState(false)
+    const [errors, setErrors] = useState({})
     const handleMoodChange = (mood) => {
 
         let validMood = mood;
@@ -28,7 +34,34 @@ const SendMood = ({ errors, handleSendMood }) => {
 
     }
 
+    const handleSendMood = async (mood) => {
+        if (loading) return
+        setLoading(true)
+        let newMood = mood
 
+        const validator = moodValidator(mood)
+        if (validator.success) {
+            setErrors({})
+            let res = await storeMood(newMood)
+            setMood("")
+            setCharLeft(moodLimit)
+            setCharLeftStatus("0")
+            setMoodEmoji(1)
+            if (filter != 0) {
+                setFilter("0")
+                getFilteredMoods("0")
+            } else {
+                setMoods([
+                    res, ...moods
+                ])
+            }
+        } else {
+            setErrors(validator.errors)
+        }
+
+
+        setLoading(false)
+    }
 
     return (
         <section className="flex flex-col mx-2 pb-4">
