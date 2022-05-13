@@ -1,14 +1,19 @@
 import { isNull } from "lodash";
 import { FadeLoader } from "react-spinners";
+import { useContext ,useEffect} from "react";
+import { MoodsContext } from "../Context/MoodsContext";
 import Mood from "./Mood";
 
-const Moods = ({ user,getFilteredMoods, filter, setFilter, loadingMore, moodsRef, moods, pageType = null }) => {
+const Moods = ({ user, pageType = null }) => {
 
+    const { moods, filter, setFilter, moodsRef, getFilteredMoods, loadingMore } = useContext(MoodsContext)
 
     const handleChange = val => {
         setFilter(val)
         getFilteredMoods(val)
     }
+
+    
 
     return (
         <section ref={moodsRef} className="flex flex-col gap-y-4 mx-2 pb-4">

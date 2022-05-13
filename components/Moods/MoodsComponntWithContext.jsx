@@ -1,21 +1,50 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { getMoods } from "../../Services/app/moods/moodsServices";
+import { MoodsContext } from "../Context/MoodsContext";
 
-const MoodsComponentWithContext = ({ children }) => {
 
-    //context
-    const MoodsContext = React.createContext();
+const MoodsComponentWithContext = ({ children, init_moods,lastID }) => {
 
     //states
     const [loadingMore, setLoadingMore] = useState(false)
     const [moods, setMoods] = useState(init_moods)
     const [lastId, setLastId] = useState(lastID)
+    const [filter, setFilter] = useState("0")
     const [moodestPage, setMoodestPage] = useState("1")
 
     //refs
     const moodsRef = useRef()
 
     //funcs
+
+    const getFilteredMoods = async (filter) => {
+
+        document.addEventListener('scroll', trackScrolling);
+
+        let paginate;
+        switch (filter) {
+            case "0":
+                paginate = await getMoods(null, null, false, "latest")
+                setMoods(paginate.data)
+                setLastId(paginate.last_id)
+                break;
+            case "1":
+                paginate = await getMoods(1, null, false, "moodest")
+                setMoodestPage(1)
+                setMoods(paginate.data)
+                break;
+            case "2":
+                paginate = await getMoods(null, null, true, "latest")
+                setMoods(paginate.data)
+                setLastId(paginate.last_id)
+                break;
+
+            default:
+                break;
+        }
+    }
+
+
     const loadMoreMoods = async (filter) => {
 
         let moodsIns = structuredClone(moods);
@@ -71,8 +100,11 @@ const MoodsComponentWithContext = ({ children }) => {
             moods, setMoods,
             lastId, setLastId,
             moodestPage, setMoodestPage,
+            filter, setFilter,
             moodsRef,
+            getFilteredMoods,
             loadMoreMoods,
+            trackScrolling
         }}>
             {children}
         </MoodsContext.Provider>
