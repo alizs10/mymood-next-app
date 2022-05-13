@@ -3,38 +3,15 @@ import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { useContext } from "react";
 import { ToastContainer } from "react-toastify";
-import { logoutUser } from "../../Services/app/user/userService";
-import HomeContext from "../Context/HomeContext";
-import Header from "./Header";
-import Nav from "./Nav";
+import Head from "./Head";
+
 
 const HomeLayout = ({ children }) => {
 
-    const { user, setUser } = useContext(HomeContext)
-    const [navbarVisibility, setNavbarVisibility] = useState(false)
-
-    const router = useRouter()
-
-    const toggleNav = () => {
-        setNavbarVisibility(!navbarVisibility)
-    }
-
-    const handleLogout = async () => {
-        const loggedOut = await logoutUser()
-        if (loggedOut) {
-            router.replace("/")
-            setUser(false)
-        }
-    }
-
-
     return (
         <Fragment>
-
-            <Header handleLogout={handleLogout} user={user} toggleNav={toggleNav} setNavbarVisibility={setNavbarVisibility} />
-            <AnimatePresence>
-                {navbarVisibility && (<Nav user={user} />)}
-            </AnimatePresence>
+            <Head />
+            
 
             <main className="mt-20 lg:mx-56 relative flex flex-col gap-y-2">
 

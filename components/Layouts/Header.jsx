@@ -1,10 +1,11 @@
-import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { AnimatePresence, MotionConfig } from "framer-motion";
 import { useState } from "react";
 import { useEffect } from "react";
 import Dropdown from "./Dropdown";
 import Link from "next/dist/client/link";
 
-const Header = ({ toggleNav, setNavbarVisibility, user, handleLogout }) => {
+const Header = ({ toggleNav, navbarVisibility, setNavbarVisibility, user, handleLogout }) => {
 
     const [userDropdownVisibility, setUserDropdownVisibility] = useState(false)
     const [dropdownStatus, setDropdownStatus] = useState(false)
@@ -25,18 +26,20 @@ const Header = ({ toggleNav, setNavbarVisibility, user, handleLogout }) => {
 
     }, [userDropdownVisibility])
 
+    
     return (
-        <header className="fixed top-0 w-full bg-slate-100 drop-shadow-md z-20 p-3 flex justify-between items-center">
+
+        <header className="h-16 w-full p-3 flex justify-between items-center">
 
             <div className="flex gap-x-2 items-center">
 
-                <button className="text-slate-900 text-lg lg:text-2xl" onClick={toggleNav}>
+                <button className={`text-slate-900 text-lg lg:text-2xl h-12 w-12 rounded-full hover-transition ${navbarVisibility ? "bg-slate-200" : "hover:bg-slate-200"}`} onClick={toggleNav}>
                     <i className="fa-regular fa-bars-staggered"></i>
                 </button>
 
                 <span className="text-base font-bold flex items-center gap-x-1">
                     مای مود
-                    <i className="fa-regular fa-face-grin-wink text-amber-400 text-xl"></i>
+                    <i className="fa-regular fa-face-grin-wink text-amber-400 text-2xl"></i>
                 </span>
 
             </div>
@@ -46,8 +49,8 @@ const Header = ({ toggleNav, setNavbarVisibility, user, handleLogout }) => {
                 {
                     !user ? (
                         <Link href="/login">
-                            <button className="text-blue-600 text-xl">
-                                <i className="fa-regular fa-arrow-right-to-bracket"></i>
+                            <button className="text-blue-600 text-xl  h-12 w-12 rounded-full hover-transition hover:bg-blue-100">
+                                <i className="fa-solid fa-arrow-right-to-bracket"></i>
                             </button>
                         </Link>
                     ) : (
