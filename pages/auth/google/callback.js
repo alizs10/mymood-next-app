@@ -1,11 +1,7 @@
 import { serialize } from "cookie";
 import { googleCallback } from "../../../Services/app/auth/authServices";
 
-const GoogleCallbackPage = () => {
-
-   
-}
-
+const GoogleCallbackPage = () => {}
 
 GoogleCallbackPage.getInitialProps = async ({ query, res }) => {
 

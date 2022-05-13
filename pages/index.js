@@ -58,13 +58,6 @@ const Home = ({ loggedUser, init_moods, lastID }) => {
     }
   };
 
-  // useEffect(() => {
-  //   setLastId("")
-  //   getFilteredMoods();
-  //   document.addEventListener('scroll', trackScrolling);
-
-  // }, [moodsFilter])
-
   const getFilteredMoods = async (filter) => {
 
     document.addEventListener('scroll', trackScrolling);

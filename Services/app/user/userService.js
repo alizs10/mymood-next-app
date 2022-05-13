@@ -159,3 +159,18 @@ export const unfollow = async (user_unfollowed_id) => {
         console.log(error);
     }
 }
+
+export const getStats = async () => {
+    try {
+        const { data, status } = await http.get(`${config['base_url']}/api/users/stats`);
+
+        if (status == 200) {
+            return data
+        }
+
+    } catch (e) {
+        let error = Object.assign(e)
+
+        console.log(error);
+    }
+}

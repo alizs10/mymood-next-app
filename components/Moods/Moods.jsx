@@ -2,11 +2,10 @@ import { isNull } from "lodash";
 import { FadeLoader } from "react-spinners";
 import Mood from "./Mood";
 
-const Moods = ({ getFilteredMoods, filter, setFilter, loadingMore, moodsRef, moods, pageType = null }) => {
+const Moods = ({ user,getFilteredMoods, filter, setFilter, loadingMore, moodsRef, moods, pageType = null }) => {
 
 
     const handleChange = val => {
-        console.log(val);
         setFilter(val)
         getFilteredMoods(val)
     }
@@ -43,7 +42,9 @@ const Moods = ({ getFilteredMoods, filter, setFilter, loadingMore, moodsRef, moo
 
                                 <option value={0}>جدیدترین</option>
                                 <option value={1}>مودترین</option>
-                                <option value={2}>دنبال کنندگان</option>
+                                {(user && pageType === null) && (
+                                    <option value={2}>دنبال کنندگان</option>
+                                )}
 
                             </select>
                         </div>

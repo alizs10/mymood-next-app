@@ -18,7 +18,7 @@ const Nav = ({ user }) => {
                     </span>
                 </Link>
             )}
-            <Link href="">
+            <Link href="users/stats">
                 <span className="btn hover:bg-slate-300 hover-transition text-xs w-fit cursor-pointer flex flex-col gap-2">
                     <i className="fa-light fa-chart-mixed text-2xl"></i>
                     <span>آمار کاربران</span>
