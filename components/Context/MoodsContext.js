@@ -16,5 +16,7 @@ export const MoodsContext = React.createContext({
     getFilteredMoods: () => {},
     loadMoreMoods: () => {},
     serverTime: "",
-    setServerTime: () => {}
+    setServerTime: () => {},
+    requestedUser: {},
+    setRequestedUser: () => {}
 });

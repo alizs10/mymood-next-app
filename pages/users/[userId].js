@@ -16,7 +16,7 @@ export default function UserProfilePage(props) {
 
     const handleFollowUser = async (id) => {
         if (!props.loggedUser) {
-            SwalNotify("دنبال کردن", "برای دنبال کردن کابران باید ابتدا وارد حساب کاربری خود شوید و یا ثبت نام کنید", "warning")
+            SwalNotify("دنبال کردن", "برای دنبال کردن کاربران باید ابتدا وارد حساب کاربری خود شوید و یا ثبت نام کنید", "warning")
             return
         }
         const res = await follow(id)
@@ -39,11 +39,11 @@ export default function UserProfilePage(props) {
     }
 
     return (
-        <MoodsComponentWithContext init_moods={props.moods} server_time={props.server_time}>
+        <MoodsComponentWithContext init_moods={props.moods} server_time={props.server_time} user={props.user}>
             <HomeContext.Provider value={{ user, setUser }}>
                 <HomeLayout>
                     <UserProfile pageType="1" moodLength={props.moods.length} user={props.user} followers={followers} followings={props.followings} isFollowed={followStatus} handleFollowUser={handleFollowUser} handleUnFollowUser={handleUnFollowUser} />
-                    <Moods />
+                    <Moods pageType="1" />
                 </HomeLayout>
             </HomeContext.Provider>
         </MoodsComponentWithContext>
@@ -55,7 +55,7 @@ export default function UserProfilePage(props) {
 export async function getServerSideProps(context) {
     const user_id = context.params.userId
     const res = await getUserInfos(user_id, context.req.headers.cookie);
-
+    console.log(res);
     if (!res) {
         return {
             redirect: {
@@ -65,15 +65,15 @@ export async function getServerSideProps(context) {
         }
     }
 
-        if (user_id == res.loggedUser.id) {
-            return {
-                redirect: {
-                    permanent: false,
-                    destination: '/my-profile'
-                }
+    if (user_id == res.loggedUser.id) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: '/my-profile'
             }
         }
-    
+    }
+
 
     return {
         props: {

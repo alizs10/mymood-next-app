@@ -58,27 +58,6 @@ export const logoutUser = async () => {
     return false
 }
 
-export const getUserProfileInfo = async (reqCookies) => {
-
-    let token = cookie.parse(reqCookies)._token
-
-    console.log(token);
-    try {
-        const { data, status } = await http.get(`${config['base_url']}/api/profile`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-        console.log(data);
-        if (status == 200) {
-            return data
-        }
-    } catch (e) {
-        let error = Object.assign(e)
-
-        console.log(error);
-    }
-}
 
 export const updateBio = async (bio) => {
 
@@ -110,10 +89,42 @@ export const getUsersIds = async () => {
     }
 }
 
-export const getUserInfos = async (user_id, reqCookies) => {
-    let token = cookie.parse(reqCookies)._token
+export const getUserProfileInfo = async (reqCookies = null, query = "") => {
+
+    let token;
+    if (reqCookies !== null) {
+        token = cookie.parse(reqCookies)._token
+    } else {
+        token = Cookies.get("_token")
+    }
+
     try {
-        const { data, status } = await http.get(`${config['base_url']}/api/users/${user_id}`, {
+        const { data, status } = await http.get(`${config['base_url']}/api/profile${query}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        console.log(data);
+        if (status == 200) {
+            return data
+        }
+    } catch (e) {
+        let error = Object.assign(e)
+
+        console.log(error);
+    }
+}
+
+
+export const getUserInfos = async (user_id, reqCookies = null, query = "") => {
+    let token;
+    if (reqCookies !== null) {
+        token = cookie.parse(reqCookies)._token
+    } else {
+        token = Cookies.get("_token")
+    }
+    try {
+        const { data, status } = await http.get(`${config['base_url']}/api/users/${user_id}${query}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

@@ -15,7 +15,7 @@ const Moods = ({ pageType = null }) => {
     const { user } = useContext(HomeContext)
     const handleChange = val => {
         setFilter(val)
-        getFilteredMoods(val)
+        getFilteredMoods(val, pageType)
     }
 
 

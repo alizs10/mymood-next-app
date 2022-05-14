@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { getMoods } from "../../Services/app/moods/moodsServices";
+import { getUserInfos, getUserProfileInfo } from "../../Services/app/user/userService";
 import { MoodsContext } from "../Context/MoodsContext";
 
 
-const MoodsComponentWithContext = ({ children, init_moods, lastID, server_time }) => {
+const MoodsComponentWithContext = ({ children, init_moods, lastID, server_time, user = {} }) => {
 
     //states
     const [loadingMore, setLoadingMore] = useState(false)
@@ -12,6 +13,7 @@ const MoodsComponentWithContext = ({ children, init_moods, lastID, server_time }
     const [filter, setFilter] = useState("0")
     const [moodestPage, setMoodestPage] = useState("1")
     const [serverTime, setServerTime] = useState(server_time)
+    const [requestedUser, setRequestedUser] = useState(user)
 
     //refs
     const moodsRef = useRef()
@@ -26,23 +28,43 @@ const MoodsComponentWithContext = ({ children, init_moods, lastID, server_time }
 
     //funcs
 
-    const getFilteredMoods = async (filter) => {
+    const getFilteredMoods = async (filter, pageType = null) => {
+        console.log(pageType);
 
-        document.addEventListener('scroll', trackScrolling);
+        if (pageType === null) {
+            document.addEventListener('scroll', trackScrolling);
+        }
 
         let res;
         switch (filter) {
             case "0":
-                res = await getMoods(null, null, false, "latest")
-                setServerTime(res.server_time)
-                setMoods(res.paginate.data)
-                setLastId(res.paginate.last_id)
+                if (pageType === null) {
+                    res = await getMoods(null, null, false, "latest")
+                    setServerTime(res.server_time)
+                    setMoods(res.paginate.data)
+                    setLastId(res.paginate.last_id)
+                } else {
+                    res = await getUserInfos(requestedUser.id)
+                    setServerTime(res.server_time)
+                    setMoods(res.moods)
+                }
                 break;
             case "1":
-                res = await getMoods(1, null, false, "moodest")
-                setServerTime(res.server_time)
-                setMoodestPage(1)
-                setMoods(res.paginate.data)
+                if (pageType === null) {
+                    res = await getMoods(1, null, false, "moodest")
+                    setServerTime(res.server_time)
+                    setMoodestPage(1)
+                    setMoods(res.paginate.data)
+                } else {
+                    if (pageType == 0) {
+                        res = await getUserProfileInfo(null, "?order_by=moodest")
+                    } else {
+                        res = await getUserInfos(requestedUser.id, null, "?order_by=moodest")
+                    }
+                    console.log(res);
+                    setServerTime(res.server_time)
+                    setMoods(res.moods)
+                }
                 break;
             case "2":
                 res = await getMoods(null, null, true, "latest")
@@ -102,7 +124,7 @@ const MoodsComponentWithContext = ({ children, init_moods, lastID, server_time }
 
     const trackScrolling = () => {
         const wrappedElement = moodsRef.current;
-        if (isBottom(wrappedElement)) {
+        if (isBottom(wrappedElement) && wrappedElement) {
             setLoadingMore(true)
             document.removeEventListener('scroll', trackScrolling);
         }
@@ -121,7 +143,9 @@ const MoodsComponentWithContext = ({ children, init_moods, lastID, server_time }
             loadMoreMoods,
             trackScrolling,
             serverTime,
-            setServerTime
+            setServerTime,
+            requestedUser,
+            setRequestedUser
         }}>
             {children}
         </MoodsContext.Provider>
