@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import Dropdown from "./Dropdown";
 import Link from "next/dist/client/link";
 
-const Header = ({ toggleNav, navbarVisibility, setNavbarVisibility, user, handleLogout }) => {
+const Header = ({ toggleNav, sidebarVisibility, setSidebarVisibility, user, handleLogout }) => {
 
     const [userDropdownVisibility, setUserDropdownVisibility] = useState(false)
     const [dropdownStatus, setDropdownStatus] = useState(false)
@@ -15,7 +15,7 @@ const Header = ({ toggleNav, navbarVisibility, setNavbarVisibility, user, handle
         if (userDropdownVisibility !== dropdownStatus) return;
 
         setDropdownStatus(1)
-        setNavbarVisibility(false)
+        setSidebarVisibility(false)
         setUserDropdownVisibility(true)
     }
 
@@ -29,11 +29,11 @@ const Header = ({ toggleNav, navbarVisibility, setNavbarVisibility, user, handle
     
     return (
 
-        <header className="h-16 w-full p-3 flex justify-between items-center">
+        <header className="fixed top-0 drop-shadow-md z-20 h-16 w-full p-3 flex justify-between bg-slate-100 items-center">
 
-            <div className="flex gap-x-2 items-center">
+            <div className="flex gap-x-2 items-center w-fit">
 
-                <button className={`text-slate-900 text-lg lg:text-2xl h-12 w-12 rounded-full hover-transition ${navbarVisibility ? "bg-slate-200" : "hover:bg-slate-200"}`} onClick={toggleNav}>
+                <button className={`text-slate-900 text-lg lg:text-2xl h-12 w-12 rounded-full hover-transition ${sidebarVisibility ? "bg-slate-200" : "hover:bg-slate-200"}`} onClick={toggleNav}>
                     <i className="fa-regular fa-bars-staggered"></i>
                 </button>
 
@@ -44,7 +44,7 @@ const Header = ({ toggleNav, navbarVisibility, setNavbarVisibility, user, handle
 
             </div>
 
-            <div className="flex gap-x-1 relative">
+            <div className="flex gap-x-1 relative w-fit">
 
                 {
                     !user ? (
