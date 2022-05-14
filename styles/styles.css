@@ -4,7 +4,6 @@ body {
   direction: rtl;
 }
 
-
 /*
 ! tailwindcss v3.0.24 | MIT License | https://tailwindcss.com
 */
@@ -545,16 +544,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   left: 0px;
 }
 
-.bottom-0{
-  bottom: 0px;
-}
-
 .top-16{
   top: 4rem;
 }
 
-.top-4{
-  top: 1rem;
+.bottom-0{
+  bottom: 0px;
 }
 
 .z-20{
@@ -634,10 +629,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-right: 0.5rem;
 }
 
-.mt-12{
-  margin-top: 3rem;
-}
-
 .block{
   display: block;
 }
@@ -710,20 +701,20 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 3rem;
 }
 
-.w-1\/2{
-  width: 50%;
-}
-
-.w-screen{
-  width: 100vw;
-}
-
 .w-1\/3{
   width: 33.333333%;
 }
 
 .w-16{
   width: 4rem;
+}
+
+.w-1\/2{
+  width: 50%;
+}
+
+.w-screen{
+  width: 100vw;
 }
 
 .shrink{
@@ -1274,18 +1265,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   letter-spacing: -0.01em;
 }
 
-.hover\:absolute:hover{
-  position: absolute;
-}
-
-.hover\:block:hover{
-  display: block;
-}
-
-.hover\:flex:hover{
-  display: flex;
-}
-
 .hover\:bg-slate-300:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(203 213 225 / var(--tw-bg-opacity));
@@ -1301,19 +1280,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(219 234 254 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-white:hover{
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-slate-100:hover{
-  --tw-bg-opacity: 1;
-  background-color: rgb(241 245 249 / var(--tw-bg-opacity));
-}
-
 .hover\:bg-slate-50:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(248 250 252 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-white:hover{
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
 .hover\:text-black:hover{
@@ -1379,14 +1353,14 @@ Ensure the default browser behavior of the `hidden` attribute.
     display: block;
   }
 
-  .md\:w-3\/5{
-    width: 60%;
-  }
-
   .md\:w-fit{
     width: -webkit-fit-content;
     width: -moz-fit-content;
     width: fit-content;
+  }
+
+  .md\:w-3\/5{
+    width: 60%;
   }
 
   .md\:grid-cols-8{
@@ -1405,11 +1379,6 @@ Ensure the default browser behavior of the `hidden` attribute.
     padding: 1.5rem;
   }
 
-  .md\:px-2{
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-  }
-
   .md\:px-6{
     padding-left: 1.5rem;
     padding-right: 1.5rem;
@@ -1424,15 +1393,15 @@ Ensure the default browser behavior of the `hidden` attribute.
     --tw-drop-shadow: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
     filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
   }
-
-  .md\:hover\:absolute:hover{
-    position: absolute;
-  }
 }
 
 @media (min-width: 1024px){
   .lg\:top-10{
     top: 2.5rem;
+  }
+
+  .lg\:top-12{
+    top: 3rem;
   }
 
   .lg\:mx-56{
@@ -1444,16 +1413,12 @@ Ensure the default browser behavior of the `hidden` attribute.
     width: 40%;
   }
 
-  .lg\:w-3\/5{
-    width: 60%;
-  }
-
-  .lg\:w-1\/5{
-    width: 20%;
-  }
-
   .lg\:w-1\/6{
     width: 16.666667%;
+  }
+
+  .lg\:w-3\/5{
+    width: 60%;
   }
 
   .lg\:gap-y-4{
