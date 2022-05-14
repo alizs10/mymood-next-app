@@ -30,22 +30,25 @@ const MoodsComponentWithContext = ({ children, init_moods, lastID, server_time }
 
         document.addEventListener('scroll', trackScrolling);
 
-        let paginate;
+        let res;
         switch (filter) {
             case "0":
-                paginate = await getMoods(null, null, false, "latest")
-                setMoods(paginate.data)
-                setLastId(paginate.last_id)
+                res = await getMoods(null, null, false, "latest")
+                setServerTime(res.server_time)
+                setMoods(res.paginate.data)
+                setLastId(res.paginate.last_id)
                 break;
             case "1":
-                paginate = await getMoods(1, null, false, "moodest")
+                res = await getMoods(1, null, false, "moodest")
+                setServerTime(res.server_time)
                 setMoodestPage(1)
-                setMoods(paginate.data)
+                setMoods(res.paginate.data)
                 break;
             case "2":
-                paginate = await getMoods(null, null, true, "latest")
-                setMoods(paginate.data)
-                setLastId(paginate.last_id)
+                res = await getMoods(null, null, true, "latest")
+                setServerTime(res.server_time)
+                setMoods(res.paginate.data)
+                setLastId(res.paginate.last_id)
                 break;
 
             default:
@@ -57,23 +60,26 @@ const MoodsComponentWithContext = ({ children, init_moods, lastID, server_time }
     const loadMoreMoods = async (filter) => {
 
         let moodsIns = structuredClone(moods);
-        let paginate = [];
+        let res;
         switch (filter.toString()) {
             case "0":
-                paginate = await getMoods(null, lastId, false, "latest")
-                setLastId(paginate.last_id)
-                setMoods([...moodsIns, ...paginate.data])
+                res = await getMoods(null, lastId, false, "latest")
+                setLastId(res.paginate.last_id)
+                setServerTime(res.server_time)
+                setMoods([...moodsIns, ...res.paginate.data])
                 break;
             case "1":
                 let reqPage = parseInt(moodestPage) + 1;
-                paginate = await getMoods(reqPage, null, false, "moodest")
-                setMoodestPage(paginate.page)
-                setMoods([...moodsIns, ...paginate.data])
+                res = await getMoods(reqPage, null, false, "moodest")
+                setMoodestPage(res.paginate.page)
+                setServerTime(res.server_time)
+                setMoods([...moodsIns, ...res.paginate.data])
                 break;
             case "2":
-                paginate = await getMoods(null, lastId, true, "latest")
-                setLastId(paginate.last_id)
-                setMoods([...moodsIns, ...paginate.data])
+                res = await getMoods(null, lastId, true, "latest")
+                setLastId(res.paginate.last_id)
+                setServerTime(res.server_time)
+                setMoods([...moodsIns, ...res.paginate.data])
                 break;
 
             default:
@@ -82,9 +88,9 @@ const MoodsComponentWithContext = ({ children, init_moods, lastID, server_time }
 
         setLoadingMore(false)
 
-        if (paginate.total_pages == 1 && filter != 1) {
+        if (res.paginate.total_pages == 1 && filter != 1) {
             document.removeEventListener('scroll', trackScrolling);
-        } else if (filter == 1 && moodestPage === paginate.total_pages) {
+        } else if (filter == 1 && moodestPage === res.paginate.total_pages) {
             document.removeEventListener('scroll', trackScrolling);
         }
 

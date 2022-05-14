@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import { ToastContainer } from "react-toastify";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-import BlurBackground from "./BlurBackground";
 import SidebarBackdrop from "./SidebarBackdrop";
 
 
@@ -48,7 +47,9 @@ const HomeLayout = ({ children }) => {
             </main>
 
             <footer className="w-full py-2">
-                <p className="text-slate-700 text-xs lg:text-sm w-full text-center">copyright 2022</p>
+                <p className="text-slate-700 text-xs lg:text-sm w-full text-center">Copyright
+                    <i className="fa-regular fa-copyright mx-2"></i>
+                    2022 All Rights Reserved</p>
             </footer>
             <ToastContainer />
 

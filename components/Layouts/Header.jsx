@@ -1,5 +1,4 @@
-import { motion } from "framer-motion";
-import { AnimatePresence, MotionConfig } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useEffect } from "react";
 import Dropdown from "./Dropdown";
@@ -26,7 +25,7 @@ const Header = ({ toggleNav, sidebarVisibility, setSidebarVisibility, user, hand
 
     }, [userDropdownVisibility])
 
-    
+
     return (
 
         <header className="fixed top-0 drop-shadow-md z-20 h-16 w-full p-3 flex justify-between bg-slate-100 items-center">
@@ -47,13 +46,7 @@ const Header = ({ toggleNav, sidebarVisibility, setSidebarVisibility, user, hand
             <div className="flex gap-x-1 relative w-fit">
 
                 {
-                    !user ? (
-                        <Link href="/login">
-                            <button className="text-blue-600 text-xl  h-12 w-12 rounded-full hover-transition hover:bg-blue-100">
-                                <i className="fa-solid fa-arrow-right-to-bracket"></i>
-                            </button>
-                        </Link>
-                    ) : (
+                    user ? (
                         <span className="flex-center gap-x-2 text-xs lg:text-base text-slate-700 cursor-pointer hover:text-black hover-transition" onClick={() => handleDropdownToggle()}>
                             <span>{`سلام، ${user.name}`}</span>
                             {
@@ -68,6 +61,13 @@ const Header = ({ toggleNav, sidebarVisibility, setSidebarVisibility, user, hand
                                 )
                             }
                         </span>
+                    ) : (
+
+                        <Link href="/login">
+                            <button className="text-blue-600 text-xl  h-12 w-12 rounded-full hover-transition hover:bg-blue-100">
+                                <i className="fa-solid fa-arrow-right-to-bracket"></i>
+                            </button>
+                        </Link>
                     )
                 }
                 <AnimatePresence>
