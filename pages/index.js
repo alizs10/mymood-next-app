@@ -8,7 +8,7 @@ import SendMood from "../components/SendMood/SendMood";
 import { getMoods } from "../Services/app/moods/moodsServices";
 import { isLoggedIn } from "../Services/app/user/userService";
 
-const Home = ({ loggedUser, init_moods, lastID }) => {
+const Home = ({ loggedUser, init_moods, lastID, server_time }) => {
 
   const { loadingMore, filter, loadMoreMoods, trackScrolling } = useContext(MoodsContext);
 
@@ -22,23 +22,13 @@ const Home = ({ loggedUser, init_moods, lastID }) => {
   const [charLeft, setCharLeft] = useState(moodLimit)
   const [charLeftStatus, setCharLeftStatus] = useState("")
 
-  useEffect(() => {
-    document.addEventListener('scroll', trackScrolling);
+ 
 
-    return () => document.removeEventListener('scroll', trackScrolling);
-
-  }, [])
-
-  useEffect(() => {
-    if (loadingMore) {
-      loadMoreMoods(filter)
-    }
-
-  }, [loadingMore])
+  
 
 
   return (
-    <MoodsComponentWithContext init_moods={init_moods} lastID={lastID}>
+    <MoodsComponentWithContext init_moods={init_moods} lastID={lastID}  server_time={server_time}>
       <HomeContext.Provider value={{ mood, setMood, moodEmoji, setMoodEmoji, user, setUser, charLeft, setCharLeft, charLeftStatus, setCharLeftStatus, moodLimit }}>
         <HomeLayout>
           {user && (<SendMood />)}
@@ -53,13 +43,14 @@ const Home = ({ loggedUser, init_moods, lastID }) => {
 export async function getServerSideProps({ req }) {
 
   const loggedUser = await isLoggedIn(req.headers.cookie)
-  const paginate = await getMoods(null, null, false, "latest")
+  const data = await getMoods(null, null, false, "latest")
 
   return {
     props: {
       loggedUser,
-      init_moods: paginate.data,
-      lastID: paginate.last_id
+      init_moods: data.paginate.data,
+      lastID: data.paginate.last_id,
+      server_time: data.server_time
     },
   }
 }

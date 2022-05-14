@@ -1,18 +1,20 @@
-import { useState } from "react";
+import { useState,useContext,useEffect } from "react";
 import { motion } from "framer-motion";
 import moment from 'jalali-moment'
-import { useEffect } from "react";
-import { useContext } from "react";
 import HomeContext from "../Context/HomeContext";
 import { deleteMood, likeMood, reportMood, unlikeMood } from "../../Services/app/moods/moodsServices";
 import { confirm, SwalNotify } from "../../Services/lib/alerts";
 import Link from 'next/link';
+import { MoodsContext } from "../Context/MoodsContext";
 
 const Mood = ({ mood }) => {
 
+    const {serverTime} = useContext(MoodsContext)
+   
     const [isLiked, setIsLiked] = useState(false)
     const [likes, setlikes] = useState(mood.likes_value)
-    const { user, moods, setMoods } = useContext(HomeContext)
+    const { user } = useContext(HomeContext)
+    const { moods, setMoods } = useContext(MoodsContext)
 
     useEffect(() => {
 
@@ -180,7 +182,7 @@ const Mood = ({ mood }) => {
                             </button>
                         )}
                     </div>
-                    <span className="text-xxs text-slate-700">{moment(mood.created_at).locale('fa').fromNow()}</span>
+                    <span className="text-xxs text-slate-700">{moment(mood.created_at).locale('fa').from(serverTime)}</span>
                 </div>
 
             </div>

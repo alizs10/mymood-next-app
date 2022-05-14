@@ -1,9 +1,9 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { getMoods } from "../../Services/app/moods/moodsServices";
 import { MoodsContext } from "../Context/MoodsContext";
 
 
-const MoodsComponentWithContext = ({ children, init_moods,lastID }) => {
+const MoodsComponentWithContext = ({ children, init_moods, lastID, server_time }) => {
 
     //states
     const [loadingMore, setLoadingMore] = useState(false)
@@ -11,9 +11,18 @@ const MoodsComponentWithContext = ({ children, init_moods,lastID }) => {
     const [lastId, setLastId] = useState(lastID)
     const [filter, setFilter] = useState("0")
     const [moodestPage, setMoodestPage] = useState("1")
+    const [serverTime, setServerTime] = useState(server_time)
 
     //refs
     const moodsRef = useRef()
+
+    //use effects
+    useEffect(() => {
+        if (loadingMore) {
+            loadMoreMoods(filter)
+        }
+
+    }, [loadingMore])
 
     //funcs
 
@@ -104,7 +113,9 @@ const MoodsComponentWithContext = ({ children, init_moods,lastID }) => {
             moodsRef,
             getFilteredMoods,
             loadMoreMoods,
-            trackScrolling
+            trackScrolling,
+            serverTime,
+            setServerTime
         }}>
             {children}
         </MoodsContext.Provider>

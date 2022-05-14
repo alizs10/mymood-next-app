@@ -7,7 +7,7 @@ export const getMoods = async (page = 1, lastID = "", followers = false, orderBy
         const { data, status } = await http.get(`${config['base_url']}/api/moods?page=${page}&last_id=${lastID}&followers=${followers}&order_by=${orderBy}`);
 
         if (status == 200) {
-            return data.paginate
+            return data
         }
     } catch (e) {
         let error = Object.assign(e)

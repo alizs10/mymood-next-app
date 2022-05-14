@@ -1,18 +1,33 @@
 import { isNull } from "lodash";
 import { FadeLoader } from "react-spinners";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MoodsContext } from "../Context/MoodsContext";
 import Mood from "./Mood";
 import HomeContext from "../Context/HomeContext";
+import { useRouter } from "next/router";
 
 const Moods = ({ pageType = null }) => {
+    const router = useRouter()
 
-    const { moods, filter, setFilter, moodsRef, getFilteredMoods, loadingMore } = useContext(MoodsContext)
+    const [pathname, setPathName] = useState(router.pathname)
+
+    const { moods, filter, setFilter, moodsRef, getFilteredMoods, loadingMore, trackScrolling } = useContext(MoodsContext)
     const { user } = useContext(HomeContext)
     const handleChange = val => {
         setFilter(val)
         getFilteredMoods(val)
     }
+
+
+    useEffect(() => {
+
+        if (pathname !== "/users/[userId]" && pathname !== "/my-profile") {
+            document.addEventListener('scroll', trackScrolling);
+        }
+
+        return () => document.removeEventListener('scroll', trackScrolling);
+
+    }, [])
 
 
     return (

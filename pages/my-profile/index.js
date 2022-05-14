@@ -13,7 +13,7 @@ import { SwalNotify } from "../../Services/lib/alerts";
 import BlurBackground from '../../components/Layouts/BlurBackground';
 import MoodsComponentWithContext from "../../components/Moods/MoodsComponntWithContext";
 
-export default function MyProfilePage({ loggedUser, moods, followers, followings }) {
+export default function MyProfilePage({ loggedUser, moods, followers, followings, server_time }) {
     const [errors, setErrors] = useState({})
     const [user, setUser] = useState(loggedUser)
     const [bio, setBio] = useState(isEmpty(loggedUser.bio) ? "" : loggedUser.bio)
@@ -43,7 +43,7 @@ export default function MyProfilePage({ loggedUser, moods, followers, followings
     }
 
     return (
-        <MoodsComponentWithContext init_moods={moods}>
+        <MoodsComponentWithContext init_moods={moods} server_time={server_time}>
             <HomeContext.Provider value={{ user, setUser }}>
                 <HomeLayout>
                     <UserProfile pageType="0" user={user} followers={followers} followings={followings} moodLength={moods.length} setUserSettingsVisibility={setUserSettingsVisibility} />
@@ -85,7 +85,8 @@ export async function getServerSideProps({ req }) {
             loggedUser: res.user,
             moods: res.moods,
             followers: res.followers,
-            followings: res.followings
+            followings: res.followings,
+            server_time: res.server_time
         }
     }
 }

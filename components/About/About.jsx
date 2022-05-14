@@ -19,11 +19,11 @@ const About = () => {
 
         <div className="flex justify-evenly">
 
-            <a className="flex flex-col" href="">
+            <a className="flex flex-col" href="https://t.me/alizs10" target="_blank">
                 <i className="fa-brands fa-telegram text-3xl"></i>
                 <span className="text-xxs mt-1 text-slate-700 font-bold" style={{ direction: "ltr" }}>@alizs10</span>
             </a>
-            <a className="flex flex-col" href="">
+            <a className="flex flex-col" href="https://instagram.com/alizs10" target="_blank">
                 <i className="fa-brands fa-instagram text-3xl"></i>
                 <span className="text-xxs mt-1 text-slate-700 font-bold" style={{ direction: "ltr" }}>@alizs10</span>
             </a>
