@@ -927,6 +927,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(241 245 249 / 0.5);
 }
 
+.bg-red-300{
+  --tw-bg-opacity: 1;
+  background-color: rgb(252 165 165 / var(--tw-bg-opacity));
+}
+
 .bg-clip-padding{
   background-clip: padding-box;
 }
@@ -970,6 +975,16 @@ Ensure the default browser behavior of the `hidden` attribute.
 .py-4{
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.py-8{
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.py-12{
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
 .pb-4{

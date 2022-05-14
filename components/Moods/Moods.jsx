@@ -90,9 +90,9 @@ const Moods = ({ pageType = null }) => {
             </div>
 
             {loadingMore && (
-                <span className="self-center">
+                <section className="w-full flex justify-center py-12">
                     <FadeLoader color={"#334155"} loading={loadingMore} />
-                </span>
+                </section>
             )}
 
 
