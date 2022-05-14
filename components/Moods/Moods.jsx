@@ -79,12 +79,18 @@ const Moods = ({ pageType = null }) => {
                     <Mood key={mood.id} mood={mood} />
                 ))}
 
-                {(moods.length === 0 && isNull(pageType)) && (
+                {(moods.length === 0 && pageType === null && filter != 2) && (
                     <span className="text-xs">در به اشتراک گذاشتن مود خود اولین نفر باشید :)</span>
                 )}
 
-                {(moods.length === 0 && pageType === 0) && (
+                {(moods.length === 0 && pageType == 0) && (
                     <span className="text-xs">هنوز مودی به اشتراک نذاشتی ...</span>
+                )}
+                {(moods.length === 0 && pageType == 1) && (
+                    <span className="text-xs">هنوز مودی به اشتراک نذاشته ...</span>
+                )}
+                {(moods.length === 0 && pageType === null && filter == 2) && (
+                    <span className="text-xs">هنوز کسی رو دنبال نکردی...</span>
                 )}
 
             </div>
