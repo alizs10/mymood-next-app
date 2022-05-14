@@ -39,7 +39,7 @@ const Stats = (props) => {
     return (
 
         <section className="flex flex-col flex-y-4 w-full">
-            <h1 classNameName='text-sm lg:text-base text-slate-800'>آمار کاربران مای مود بر اساس مودهایی که داشته اند</h1>
+            <h1 className='text-sm lg:text-base text-slate-800'>آمار کاربران مای مود بر اساس مودهایی که داشته اند</h1>
 
             <div className="flex-center w-1/2 lg:w-3/5 self-center">
                 <Doughnut data={data} />

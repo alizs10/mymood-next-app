@@ -1,24 +1,32 @@
+import { useState } from "react";
+import HomeContext from "../../components/Context/HomeContext";
 import HomeLayout from "../../components/Layouts/HomeLayout";
 import Stats from "../../components/Stats/Stats";
-import { getStats } from "../../Services/app/user/userService";
+import { getStats, isLoggedIn } from "../../Services/app/user/userService";
 
-const StatsPage = ({ types, data }) => {
+const StatsPage = ({ types, data, loggedUser }) => {
+
+    const [user, setUser] = useState(loggedUser)
     return (
-        <HomeLayout>
-            <Stats data={data} />
-        </HomeLayout>
+        <HomeContext.Provider value={{ user, setUser }}>
+            <HomeLayout>
+                <Stats data={data} />
+            </HomeLayout>
+        </HomeContext.Provider>
     );
 }
 
-StatsPage.getInitialProps = async () => {
-
+export async function getServerSideProps(ctx) {
     const res = await getStats()
+    const loggedUser = await isLoggedIn(ctx.req.headers.cookie)
     return {
-
-        types: res.types,
-        data: res.data
-
+        props: {
+            types: res.types,
+            data: res.data,
+            loggedUser
+        },
     }
 }
 
 export default StatsPage;
+

@@ -20,7 +20,7 @@ export default function AboutPage({ loggedUser }) {
 }
 
 export async function getServerSideProps(ctx) {
-console.log(ctx);
+
     const loggedUser = await isLoggedIn(ctx.req.headers.cookie)
     return {
         props: {
