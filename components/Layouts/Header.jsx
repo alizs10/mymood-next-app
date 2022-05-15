@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -25,6 +26,10 @@ const Header = ({ toggleNav, sidebarVisibility, setSidebarVisibility, user, hand
 
     }, [userDropdownVisibility])
 
+    const variants = {
+        down: { rotate: [0, -180] },
+        up: { rotate: [-180, 0] }
+    };
 
     return (
 
@@ -32,7 +37,7 @@ const Header = ({ toggleNav, sidebarVisibility, setSidebarVisibility, user, hand
 
             <div className="flex gap-x-2 items-center w-fit">
 
-                <button className={`text-slate-900 text-lg lg:text-2xl h-12 w-12 rounded-full hover-transition ${sidebarVisibility ? "bg-slate-200" : "hover:bg-slate-200"}`} onClick={toggleNav}>
+                <button key={"sidebar-toggle"} className={`text-slate-900 text-lg lg:text-2xl h-12 w-12 rounded-full hover-transition ${sidebarVisibility ? "bg-slate-200" : "hover:bg-slate-200"}`} onClick={toggleNav}>
                     <i className="fa-regular fa-bars-staggered"></i>
                 </button>
 
@@ -49,17 +54,11 @@ const Header = ({ toggleNav, sidebarVisibility, setSidebarVisibility, user, hand
                     user ? (
                         <span className="flex-center gap-x-2 text-xs lg:text-base text-slate-700 cursor-pointer hover:text-black hover-transition" onClick={() => handleDropdownToggle()}>
                             <span>{`سلام، ${user.name}`}</span>
-                            {
-                                userDropdownVisibility ? (
-                                    <span key={1}>
-                                        <i className="fa-light fa-angle-up"></i>
-                                    </span>
-                                ) : (
-                                    <span key={0}>
-                                        <i className="fa-light fa-angle-down"></i>
-                                    </span>
-                                )
-                            }
+                            <motion.span
+                                variants={variants}
+                                animate={userDropdownVisibility ? 'up' : 'down'}>
+                                <i className="fa-light fa-angle-up"></i>
+                            </motion.span>
                         </span>
                     ) : (
 

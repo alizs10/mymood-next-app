@@ -10,7 +10,11 @@ const Dropdown = ({ setUserDropdownVisibility, handleLogout }) => {
 
     return (
         <OutsideClickHandler onOutsideClick={() => setUserDropdownVisibility(false)}>
-            <motion.div animate={{ y: [-100, 0] }} exit={{ y: [0, -100] }} className="absolute top-8 lg:top-12 left-0 z-20 w-24 bg-slate-100 rounded-lg drop-shadow-lg p-2" onClick={() => closeAndLogout()}>
+            <motion.div animate={{ y: [-200, 0] }} exit={{ y: [0, -200] }} className="absolute top-8 lg:top-12 left-0 z-20 w-fit bg-slate-100 rounded-lg drop-shadow-lg p-2" onClick={() => closeAndLogout()}>
+                <button className="text-xs w-full flex text-right gap-x-2 hover:text-red-500 hover-transition">
+                    <i className="fa-light fa-key-skeleton text-base"></i>
+                    <span>تغییر کلمه عبور</span>
+                </button>
                 <button className="text-xs w-full flex text-right gap-x-2 hover:text-red-500 hover-transition">
                     <i className="fa-light fa-door-open text-base"></i>
                     <span>خروج</span>
