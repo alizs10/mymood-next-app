@@ -55,7 +55,6 @@ export default function UserProfilePage(props) {
 export async function getServerSideProps(context) {
     const user_id = context.params.userId
     const res = await getUserInfos(user_id, context.req.headers.cookie);
-    console.log(res);
     if (!res) {
         return {
             redirect: {
