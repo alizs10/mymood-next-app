@@ -59,3 +59,7 @@ export const resetPassword = async (formdata) => {
         return await http.post(`${config['base_url']}/api/reset-password`, formdata);
     });
 }
+
+export const changePassword = async (data) => {
+    return await http.post(`${config['base_url']}/api/change-password`, JSON.stringify(data));
+}

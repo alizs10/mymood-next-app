@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import Dropdown from "./Dropdown";
 import Link from "next/dist/client/link";
 
-const Header = ({ toggleNav, sidebarVisibility, setSidebarVisibility, user, handleLogout }) => {
+const Header = ({ toggleNav, sidebarVisibility, setSidebarVisibility, user, handleLogout, setChangePasswordWinVisibility }) => {
 
     const [userDropdownVisibility, setUserDropdownVisibility] = useState(false)
     const [dropdownStatus, setDropdownStatus] = useState(false)
@@ -70,7 +70,7 @@ const Header = ({ toggleNav, sidebarVisibility, setSidebarVisibility, user, hand
                     )
                 }
                 <AnimatePresence>
-                    {userDropdownVisibility && (<Dropdown handleLogout={handleLogout} setUserDropdownVisibility={setUserDropdownVisibility} />)}
+                    {userDropdownVisibility && (<Dropdown handleLogout={handleLogout} setUserDropdownVisibility={setUserDropdownVisibility} setChangePasswordWinVisibility={setChangePasswordWinVisibility} />)}
                 </AnimatePresence>
 
             </div>

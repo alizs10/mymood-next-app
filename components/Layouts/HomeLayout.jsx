@@ -7,6 +7,8 @@ import { ToastContainer } from "react-toastify";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import SidebarBackdrop from "./SidebarBackdrop";
+import Backdrop from "./Backdrop";
+import ChangePasswordWindow from "../UserProfile/ChangePassword/ChangePasswordWindow";
 
 
 
@@ -16,6 +18,7 @@ const HomeLayout = ({ children }) => {
     const { user, setUser } = useContext(HomeContext)
 
     const [sidebarVisibility, setSidebarVisibility] = useState(false)
+    const [changePasswordWinVisibility, setChangePasswordWinVisibility] = useState(false)
 
     const toggleNav = () => {
         setSidebarVisibility(!sidebarVisibility)
@@ -31,13 +34,20 @@ const HomeLayout = ({ children }) => {
     return (
         <Fragment>
 
-            <Header handleLogout={handleLogout} user={user} toggleNav={toggleNav} sidebarVisibility={sidebarVisibility} setSidebarVisibility={setSidebarVisibility} />
+            <Header handleLogout={handleLogout} user={user} toggleNav={toggleNav} sidebarVisibility={sidebarVisibility} setSidebarVisibility={setSidebarVisibility} setChangePasswordWinVisibility={setChangePasswordWinVisibility} />
 
             <AnimatePresence>
                 {sidebarVisibility && (
                     <SidebarBackdrop onClick={setSidebarVisibility}>
                         <Sidebar user={user} />
                     </SidebarBackdrop>
+                )}
+            </AnimatePresence>
+            <AnimatePresence>
+                {changePasswordWinVisibility && (
+                    <Backdrop onClick={setChangePasswordWinVisibility}>
+                        <ChangePasswordWindow setChangePasswordWinVisibility={setChangePasswordWinVisibility} />
+                    </Backdrop>
                 )}
             </AnimatePresence>
             <main className="mt-20 lg:mx-56 relative flex flex-col gap-y-2">

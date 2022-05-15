@@ -1,21 +1,26 @@
 import OutsideClickHandler from "react-outside-click-handler";
 import { motion } from "framer-motion";
 
-const Dropdown = ({ setUserDropdownVisibility, handleLogout }) => {
+const Dropdown = ({ setUserDropdownVisibility, handleLogout, setChangePasswordWinVisibility }) => {
 
     const closeAndLogout = () => {
         setUserDropdownVisibility(false)
         handleLogout()
     }
 
+    const handleOpenChangePassWin = () => {
+        setChangePasswordWinVisibility(true)
+        setUserDropdownVisibility(false)
+    }
+
     return (
         <OutsideClickHandler onOutsideClick={() => setUserDropdownVisibility(false)}>
-            <motion.div animate={{ y: [-200, 0] }} exit={{ y: [0, -200] }} className="absolute top-8 lg:top-12 left-0 z-20 w-fit bg-slate-100 rounded-lg drop-shadow-lg p-2" onClick={() => closeAndLogout()}>
-                <button className="text-xs w-full flex text-right gap-x-2 hover:text-red-500 hover-transition">
+            <motion.div animate={{ y: [-200, 0] }} exit={{ y: [0, -200] }} className="absolute top-8 lg:top-12 left-0 z-20 w-fit bg-slate-100 rounded-lg drop-shadow-lg p-2">
+                <button className="text-xs w-full flex text-right gap-x-2 hover:text-red-500 hover-transition" onClick={() => handleOpenChangePassWin()}>
                     <i className="fa-light fa-key-skeleton text-base"></i>
                     <span>تغییر کلمه عبور</span>
                 </button>
-                <button className="text-xs w-full flex text-right gap-x-2 hover:text-red-500 hover-transition">
+                <button className="text-xs w-full flex text-right gap-x-2 hover:text-red-500 hover-transition" onClick={() => closeAndLogout()}>
                     <i className="fa-light fa-door-open text-base"></i>
                     <span>خروج</span>
                 </button>
