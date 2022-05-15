@@ -49,3 +49,13 @@ export const loginWithGoogle = async () => {
 export const googleCallback = async (query) => {
     return await http.get(`${config["base_url"]}/api/auth/google/callback?code=${query.code}&scope=${query.scope}&authuser=${query.authuser}$propmpt=${query.propmpt}`)
 }
+
+
+export const forgotPassword = async (forgotPassArr) => {
+    return await http.post(`${config['base_url']}/api/forgot-password`, JSON.stringify(forgotPassArr));
+}
+export const resetPassword = async (formdata) => {
+    return await http.get(`${config["base_url"]}/sanctum/csrf-cookie`).then(async response => {
+        return await http.post(`${config['base_url']}/api/reset-password`, formdata);
+    });
+}

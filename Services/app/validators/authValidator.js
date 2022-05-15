@@ -64,10 +64,10 @@ export const passwordWithConfirmationValidator = payload => {
 
     if (validator.isEmpty(payload.password)) {
         isFormValid = false;
-        errors.password = "کلمه عبور جدید الزامی می باشد";
+        errors.password = "کلمه عبور الزامی می باشد";
     } else if (!validator.isStrongPassword(payload.password, { minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1, returnScore: false, pointsPerUnique: 1, pointsPerRepeat: 0.5, pointsForContainingLower: 10, pointsForContainingUpper: 10, pointsForContainingNumber: 10, pointsForContainingSymbol: 10 })) {
         isFormValid = false;
-        errors.password = "کلمه عبور جدید شما ضعیف می باشد";
+        errors.password = "کلمه عبور شما ضعیف می باشد";
     }
 
 

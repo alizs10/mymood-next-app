@@ -40,6 +40,7 @@ const LoginForm = ({ errors, loading, email, setEmail, handleCheckEmail }) => {
                     <button className="btn bg-amber-300 text-slate-900 mt-2">ورود</button>
                 )}
             </form>
+           
         </Fragment>
     );
 }

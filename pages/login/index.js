@@ -6,7 +6,7 @@ import LoginForm from "../../components/Auth/LoginForm";
 import PasswordForm from "../../components/Auth/PasswordForm";
 import ResultMessage from "../../components/Auth/ResultMessage";
 import VerificationCodeForm from "../../components/Auth/VerificationCodeForm";
-import { checkEmail, checkVCode, login, register } from "../../Services/app/auth/authServices";
+import { checkEmail, checkVCode, forgotPassword, login, register } from "../../Services/app/auth/authServices";
 import { isLoggedIn, loginUser } from "../../Services/app/user/userService";
 import { emailValidator, passwordValidator, passwordWithConfirmationValidator, vcodeValidator } from "../../Services/app/validators/authValidator";
 import { notify } from "../../Services/lib/alerts";
@@ -179,6 +179,24 @@ export default function LoginPage() {
         }
     }
 
+    const handleForgotPassword = async () => {
+        if (loading) return;
+
+        setLoading(true)
+        try {
+            const { data, status } = await forgotPassword({ email })
+
+            if (status == 200) {
+                handleBack()
+                setResMessage("ایمیل بازیابی کلمه عبور برای شما ارسال شد")
+            }
+        } catch (error) {
+            console.log(error);
+        }
+     
+
+        setLoading(false)
+    }
 
     return (
         <AuthLayout handleBack={handleBack}>
@@ -197,7 +215,7 @@ export default function LoginPage() {
                     ) : (
                         <div className="flex flex-col gap-y-2">
                             <ResultMessage message={resMessage} />
-                            <PasswordForm loading={loading} errors={errors} handleSubmit={handleSubmit} password={password} setPassword={setPassword} passwordConfirmation={passwordConfirmation} setPasswordConfirmation={setPasswordConfirmation} checkEmailRes={checkEmailRes} />
+                            <PasswordForm loading={loading} errors={errors} handleSubmit={handleSubmit} password={password} setPassword={setPassword} passwordConfirmation={passwordConfirmation} setPasswordConfirmation={setPasswordConfirmation} checkEmailRes={checkEmailRes} handleForgotPassword={handleForgotPassword} />
                         </div>
                     )
                 )}
