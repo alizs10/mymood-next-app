@@ -119,7 +119,11 @@ const MoodsComponentWithContext = ({ children, init_moods, lastID, server_time, 
     }
 
     const isBottom = (el) => {
-        return el.getBoundingClientRect().bottom <= window.innerHeight;
+        if (el) {
+            return el.getBoundingClientRect().bottom <= window.innerHeight;
+        }
+
+        return false;
     }
 
     const trackScrolling = () => {

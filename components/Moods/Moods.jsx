@@ -18,9 +18,19 @@ const Moods = ({ pageType = null }) => {
         getFilteredMoods(val, pageType)
     }
 
+    const [moodsTitle, setMoodsTitle] = useState("حال کاربرای مای مود چطوره");
+
+    
 
     useEffect(() => {
-
+        
+        if (pathname === "/my-profile") {
+            setMoodsTitle("حال من چطوره")
+        }
+    
+        if (pathname === "/users/[userId]") {
+            setMoodsTitle("حال این کاربر چطوره")
+        }
         if (pathname !== "/users/[userId]" && pathname !== "/my-profile") {
             document.addEventListener('scroll', trackScrolling);
         }
@@ -34,7 +44,7 @@ const Moods = ({ pageType = null }) => {
         <section ref={moodsRef} className="flex flex-col gap-y-4 mx-2 pb-4">
 
             <div className="flex justify-between items-center">
-                <span className="text-xs text-slate-700">حال کاربرای مای مود چطوره</span>
+                <span className="text-xs text-slate-700">{moodsTitle}</span>
 
                 <div className="flex gap-x-2 items-center">
 
